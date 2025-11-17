@@ -4,27 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { ChevronRight, X } from "lucide-react";
 import Image from "next/image";
+// import logo from "@/logo/aditya-doors-logo.png";
+// import { Phone, ShoppingCart, Search } from "lucide-react";
 
-// --------------------------------------------------------
-// ⭐ Added Strong Types (Fixes ALL TS Errors)
-// --------------------------------------------------------
-interface DropdownItem {
-  name: string;
-  href: string;
-}
-
-interface NavItem {
-  name: string;
-  href: string;
-  active?: boolean;
-  dropdown?: boolean;
-  dropdownItems?: DropdownItem[];
-}
-
-// --------------------------------------------------------
-// ⭐ Your navItems (unchanged)
-// --------------------------------------------------------
-const navItems: NavItem[] = [
+const navItems = [
   { name: "HOME", href: "/", active: true },
   {
     name: "ABOUT",
@@ -71,7 +54,10 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <Image src="/logo/aditya-doors-logo.png" alt="logo" width={80} height={70} />
+              {/* <span className="text-2xl font-bold text-gray-900 hover:text-gold transition-colors duration-300">
+                [Aditya]
+              </span> */}
+                <Image src="/logo/aditya-doors-logo.png" alt="logo" width={80} height={70} />
             </Link>
           </div>
 
@@ -94,29 +80,69 @@ export default function Navbar() {
                   {item.name}
                 </Link>
 
-                {/* Dropdown Menu — FIXED VERSION */}
-                {item.dropdown &&
-                  item.dropdownItems &&
-                  item.dropdownItems.length > 0 &&
-                  activeDropdown === item.name && (
-                    <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg z-50 animate-fade-in">
-                      <div className="py-2">
-                        {item.dropdownItems.map((dropdownItem, j) => (
-                          <Link
-                            key={dropdownItem.name}
-                            href={dropdownItem.href}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gold transition-colors duration-300 animate-slide-in-right"
-                            style={{ animationDelay: `${j * 0.1}s` }}
-                          >
-                            {dropdownItem.name}
-                          </Link>
-                        ))}
-                      </div>
+                {/* Dropdown Menu */}
+                {/* {item.dropdown && activeDropdown === item.name && (
+                  <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg z-50 animate-fade-in">
+                    <div className="py-2">
+                      {item.dropdownItems?.map((dropdownItem, j) => (
+                        <Link
+                          key={dropdownItem.name}
+                          href={dropdownItem.href}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gold transition-colors duration-300 animate-slide-in-right"
+                          style={{ animationDelay: `${j * 0.1}s` }}
+                        >
+                          {dropdownItem.name}
+                        </Link>
+                      ))}
                     </div>
-                  )}
+                  </div>
+                )} */}
+
+                {item.dropdown && item.dropdownItems && activeDropdown === item.name && (
+                  <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg z-50 animate-fade-in">
+                    <div className="py-2">
+                      {item.dropdownItems.map((dropdownItem, j) => (
+                        <Link
+                          key={dropdownItem.name}
+                          href={dropdownItem.href}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gold transition-colors duration-300 animate-slide-in-right"
+                          style={{ animationDelay: `${j * 0.1}s` }}
+                        >
+                          {dropdownItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </nav>
+
+          {/* Contact Info and Icons */}
+          {/* <div
+            className="hidden md:flex items-center space-x-4 animate-fade-in"
+            style={{ animationDelay: "0.7s" }}
+          >
+            <div className="flex items-center">
+              <div className="bg-gold rounded-full p-2 mr-2 animate-pulse-slow">
+                <Phone className="h-4 w-4 text-white" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-900">
+                  0 (800) 255-52-38
+                </p>
+                <p className="text-xs text-gray-500">24/7 - FREE - CALL</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <button className="p-2 text-gray-500 hover:text-gold transition-colors duration-300">
+                <ShoppingCart className="h-5 w-5" />
+              </button>
+              <button className="p-2 text-gray-500 hover:text-gold transition-colors duration-300">
+                <Search className="h-5 w-5" />
+              </button>
+            </div>
+          </div> */}
 
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center">
@@ -185,6 +211,14 @@ export default function Navbar() {
                 ))}
               </ul>
             </nav>
+
+            {/* Cart at bottom */}
+            {/* <div className="p-4 border-t border-[#3c2a21] flex items-center">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-[#2a1c16] font-medium mr-2">
+                0
+              </div>
+              <ShoppingCart className="h-5 w-5 text-gold" />
+            </div> */}
           </div>
         </div>
       )}
