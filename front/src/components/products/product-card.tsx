@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 // import { Button } from "@/components/ui/button"
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   category: string;
   price: number;
@@ -176,17 +176,17 @@ export default function ProductCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <span className="text-2xl font-bold text-gray-900">
-              ${product.price}
+              ₹{product.price}
             </span>
             {product.originalPrice && (
               <span className="text-lg text-gray-500 line-through">
-                ${product.originalPrice}
+                ₹{product.originalPrice}
               </span>
             )}
           </div>
           {product.originalPrice && (
             <span className="text-sm text-red-500 font-medium">
-              Save ${(product.originalPrice - product.price).toFixed(2)}
+              Save ₹{(product.originalPrice - product.price).toFixed(2)}
             </span>
           )}
         </div>

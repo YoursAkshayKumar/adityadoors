@@ -12,7 +12,7 @@ export default function DoorImage() {
         <clipPath id="942d860f77">
           <path
             d="M 156.222656 20.242188 L 596.472656 20.242188 L 596.472656 575.992188 L 156.222656 575.992188 Z M 156.222656 20.242188 "
-            clip-rule="nonzero"
+            clipRule="nonzero"
           />
         </clipPath>
         <image
@@ -31,7 +31,7 @@ export default function DoorImage() {
         fill="#ffffff"
         y="-60"
         height="719.999999"
-        fill-opacity="1"
+        fillOpacity="1"
       />
       <rect
         x="-75"
@@ -39,9 +39,9 @@ export default function DoorImage() {
         fill="#f9f5f2"
         y="-60"
         height="719.999999"
-        fill-opacity="1"
+        fillOpacity="1"
       />
-      <g clip-path="url(#942d860f77)">
+      <g clipPath="url(#942d860f77)">
         <g transform="matrix(1.29, 0, 0, 1.29, -48.173626, -25.072131)">
           <image
             x="0"

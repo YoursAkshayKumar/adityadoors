@@ -32,6 +32,12 @@ const navItems: NavItem[] = [
     dropdown: false,
     dropdownItems: []
   },
+  {
+    name: "PRODUCT",
+    href: "/products",
+    dropdown: false,
+    dropdownItems: []
+  },
   // {
   //   name: "DOORS",
   //   href: "/doors",

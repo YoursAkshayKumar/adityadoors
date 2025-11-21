@@ -1,179 +1,56 @@
 "use client";
-
 import { useState, useMemo } from "react";
 import { useScrollAnimation } from "../hooks/use-scroll-animation";
 import { Search, Filter, Plus } from "lucide-react";
 import ProductCard from "./product-card";
 import AddProductModal from "./add-product-modal";
 import { Button } from "antd";
-// import Button from "@/components/ui/button"
+import { useGetShowingProductsQuery } from "@/redux/features/productApi";
+import { useRouter } from "next/navigation";
 
-// Sample product data
-const products = [
-  {
-    id: 1,
-    name: "Aura",
-    category: "Handles",
-    price: 89.99,
-    originalPrice: 120.0,
-    rating: 4.8,
-    reviews: 124,
-    image: "/Images/PRODUCT NAME-_20250905_154059_0000.jpg",
-    isOnSale: true,
-    isFeatured: true,
-    description: "Elevate your home's first impression with the Aura main Door",
-  },
-  {
-    id: 2,
-    name: "Glass Sunmica Door",
-    category: "Door Locks",
-    price: 299.99,
-    rating: 4.9,
-    reviews: 89,
-    image: "/Images/PRODUCT NAME - THE NATURE TONE_20250905_152610_0000.jpg",
-    isOnSale: false,
-    isFeatured: true,
-    description: "Sunmica Door: A perfect blend of style and durablity",
-  },
-  {
-    id: 3,
-    name: "Chocolate Groove",
-    category: "Door Hinges",
-    price: 45.99,
-    originalPrice: 65.0,
-    rating: 4.7,
-    reviews: 156,
-    image: "/Images/1_20250904_232041_0000.png",
-    isOnSale: true,
-    isFeatured: false,
-    description: "Exquisite Chocolate Veneer Door by Aditya Doors",
-  },
-  {
-    id: 4,
-    name: "Teak Wood Door Frame",
-    category: "Doors",
-    price: 899.99,
-    rating: 4.6,
-    reviews: 67,
-    image:
-      "/Images/TEAK WOOD(SAGWAN) DOOR FRAME(CHOKHAT)_20250904_234508_0001.jpg",
-    isOnSale: false,
-    isFeatured: true,
-    description:
-      "Aditya Doors proudly presents our exquisite Teak Wood Door Frame, also known as Sagwan Chokhat",
-  },
-  {
-    id: 5,
-    name: "Double Glazed Window",
-    category: "Windows",
-    price: 549.99,
-    originalPrice: 699.99,
-    rating: 4.8,
-    reviews: 203,
-    image: "/product-window-1.png",
-    isOnSale: true,
-    isFeatured: true,
-    description: "Energy-efficient double glazed window with aluminum frame",
-  },
-  {
-    id: 6,
-    name: "Keyless Entry Pad",
-    category: "Keyless Entry",
-    price: 199.99,
-    rating: 4.5,
-    reviews: 98,
-    image: "/product-keypad-1.png",
-    isOnSale: false,
-    isFeatured: false,
-    description: "Digital keypad entry system with weather resistance",
-  },
-  {
-    id: 7,
-    name: "Door Frame Hardware Kit",
-    category: "Hardware",
-    price: 129.99,
-    originalPrice: 159.99,
-    rating: 4.4,
-    reviews: 76,
-    image: "/product-hardware-1.png",
-    isOnSale: true,
-    isFeatured: false,
-    description: "Complete hardware kit for door installation",
-  },
-  {
-    id: 8,
-    name: "LED Door Light Fixture",
-    category: "Fixtures",
-    price: 79.99,
-    rating: 4.6,
-    reviews: 134,
-    image: "/product-fixture-1.png",
-    isOnSale: false,
-    isFeatured: false,
-    description: "Modern LED light fixture for door entrance",
-  },
-  {
-    id: 9,
-    name: "Glass Panel Door",
-    category: "Doors",
-    price: 1299.99,
-    rating: 4.9,
-    reviews: 45,
-    image: "/product-door-2.png",
-    isOnSale: false,
-    isFeatured: true,
-    description: "Contemporary glass panel door with aluminum frame",
-  },
-  {
-    id: 10,
-    name: "Biometric Door Lock",
-    category: "Door Locks",
-    price: 449.99,
-    originalPrice: 549.99,
-    rating: 4.7,
-    reviews: 112,
-    image: "/product-lock-2.png",
-    isOnSale: true,
-    isFeatured: true,
-    description: "Advanced biometric fingerprint door lock system",
-  },
-];
+// Product interface matching your MongoDB structure
+interface Product {
+  _id: string;
+  sku: string;
+  title: string;
+  parent: string;
+  children?: string;
+  tags?: string[];
+  image: string;
+  originalPrice: number;
+  price: number;
+  discount: number;
+  relatedImages?: string[];
+  description: string;
+  category: {
+    name?: string;
+    [key: string]: any;
+  };
+  quantity: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  // Additional fields for compatibility with ProductCard
+  rating?: number;
+  reviews?: number;
+  isOnSale?: boolean;
+  isFeatured?: boolean;
+}
 
-const categories = [
-  { name: "All Products", count: products.length },
-  {
-    name: "Door Hinges",
-    count: products.filter((p) => p.category === "Door Hinges").length,
-  },
-  {
-    name: "Door Locks",
-    count: products.filter((p) => p.category === "Door Locks").length,
-  },
-  {
-    name: "Doors",
-    count: products.filter((p) => p.category === "Doors").length,
-  },
-  {
-    name: "Fixtures",
-    count: products.filter((p) => p.category === "Fixtures").length,
-  },
-  {
-    name: "Handles",
-    count: products.filter((p) => p.category === "Handles").length,
-  },
-  {
-    name: "Hardware",
-    count: products.filter((p) => p.category === "Hardware").length,
-  },
-  {
-    name: "Keyless Entry",
-    count: products.filter((p) => p.category === "Keyless Entry").length,
-  },
-  {
-    name: "Windows",
-    count: products.filter((p) => p.category === "Windows").length,
-  },
-];
+// Transformed product interface for ProductCard
+interface TransformedProduct {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  originalPrice?: number;
+  rating: number;
+  reviews: number;
+  image: string;
+  isOnSale: boolean;
+  isFeatured: boolean;
+  description: string;
+}
 
 export default function ProductsContent() {
   const [sectionRef, isVisible] = useScrollAnimation();
@@ -182,8 +59,69 @@ export default function ProductsContent() {
   const [sortBy, setSortBy] = useState("featured");
   const [showAddProductModal, setShowAddProductModal] = useState(false);
 
+  // Fetch products using RTK Query
+  const { data, isLoading, isError, error, refetch } =
+    useGetShowingProductsQuery(undefined);
+
+  // Debug: Log the response
+  console.log("API Response:", data);
+  console.log("Loading:", isLoading);
+  console.log("Error:", isError, error);
+
+  // Extract products from response
+  const products: Product[] = data?.products || data || [];
+  console.log("Products array:", products);
+
+  // Temporary: Use mock data if no products loaded (for testing UI)
+  const hasMockData = products.length === 0 && !isLoading;
+  if (hasMockData) {
+    console.warn("No products from API, using mock data for testing");
+  }
+
+  // Transform MongoDB product to ProductCard format
+  const transformProduct = (product: Product): TransformedProduct => {
+    return {
+      id: product._id,
+      name: product.title,
+      category: product.parent,
+      price: product.price,
+      originalPrice: product.discount > 0 ? product.originalPrice : undefined,
+      rating: product.rating || 4.5, // Default rating if not available
+      reviews: product.reviews || 0,
+      image: product.image,
+      isOnSale: product.discount > 0,
+      isFeatured: product.status === 'active' && product.quantity > 0,
+      description: product.description,
+    };
+  };
+
+  // Get unique categories from products
+  const categories = useMemo(() => {
+    const categoryMap = new Map<string, number>();
+    
+    products.forEach((product) => {
+      const category = product.parent;
+      categoryMap.set(category, (categoryMap.get(category) || 0) + 1);
+    });
+
+    const categoryList = [
+      { name: "All Products", count: products.length },
+      ...Array.from(categoryMap.entries()).map(([name, count]) => ({
+        name,
+        count,
+      })),
+    ];
+
+    return categoryList.sort((a, b) => {
+      if (a.name === "All Products") return -1;
+      if (b.name === "All Products") return 1;
+      return a.name.localeCompare(b.name);
+    });
+  }, [products]);
+
+  // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let filtered = products;
+    let filtered = products.map(transformProduct);
 
     // Filter by search term
     if (searchTerm) {
@@ -221,7 +159,62 @@ export default function ProductsContent() {
     }
 
     return filtered;
-  }, [searchTerm, selectedCategory, sortBy]);
+  }, [products, searchTerm, selectedCategory, sortBy]);
+
+  // Handle new product addition
+  const handleProductAdded = async (newProduct: any) => {
+    try {
+      // Refetch products list after adding new product
+      await refetch();
+      alert("Product added successfully!");
+    } catch (err) {
+      console.error('Error refreshing products:', err);
+      alert("Product added, but failed to refresh the list. Please reload the page.");
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <section className="py-16 md:py-24 bg-cream-50">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex justify-center items-center min-h-[400px]">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-gold mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading products...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (isError) {
+    return (
+      <section className="py-16 md:py-24 bg-cream-50">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex justify-center items-center min-h-[400px]">
+            <div className="text-center">
+              <div className="text-red-500 mb-4">
+                <Filter className="h-16 w-16 mx-auto" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                Error Loading Products
+              </h3>
+              <p className="text-gray-500 mb-4">
+                {error?.toString() || "Failed to load products. Please try again later."}
+              </p>
+              <button
+                onClick={() => refetch()}
+                className="bg-gold hover:bg-gold-dark text-white px-6 py-2 rounded-lg transition-all duration-300"
+              >
+                Retry
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section ref={sectionRef} className="py-16 md:py-24 bg-cream-50">
@@ -229,13 +222,7 @@ export default function ProductsContent() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
           <div className="lg:w-1/4">
-            <div
-              className={`bg-white rounded-lg shadow-lg p-6 sticky top-24 transition-all duration-1000 ${
-                isVisible
-                  ? "opacity-100 transform translate-x-0"
-                  : "opacity-0 transform -translate-x-12"
-              }`}
-            >
+            <div className="bg-white rounded-lg shadow-lg p-6 sticky top-24">
               {/* Search Bar */}
               <div className="mb-8">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">
@@ -298,13 +285,7 @@ export default function ProductsContent() {
 
           {/* Products Grid */}
           <div className="lg:w-3/4">
-            <div
-              className={`mb-6 flex justify-between items-center transition-all duration-1000 delay-300 ${
-                isVisible
-                  ? "opacity-100 transform translate-y-0"
-                  : "opacity-0 transform translate-y-8"
-              }`}
-            >
+            <div className="mb-6 flex justify-between items-center">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">
                   {selectedCategory} ({filteredProducts.length} products)
@@ -329,7 +310,7 @@ export default function ProductsContent() {
                   key={product.id}
                   product={product}
                   index={index}
-                  isVisible={isVisible}
+                  isVisible={true}
                 />
               ))}
             </div>
@@ -350,16 +331,13 @@ export default function ProductsContent() {
           </div>
         </div>
       </div>
+
       {/* Add Product Modal */}
       {showAddProductModal && (
         <AddProductModal
           isOpen={showAddProductModal}
           onClose={() => setShowAddProductModal(false)}
-          onProductAdded={(newProduct) => {
-            // In a real app, this would update the products list
-            console.log("New product added:", newProduct);
-            alert("Product added successfully!");
-          }}
+          onProductAdded={handleProductAdded}
         />
       )}
     </section>

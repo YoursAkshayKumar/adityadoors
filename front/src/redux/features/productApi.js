@@ -1,4 +1,4 @@
-import { apiSlice } from "src/redux/api/apiSlice";
+import { apiSlice } from "@/redux/api/apiSlice";
 
 export const authApi = apiSlice.injectEndpoints({
   overrideExisting:true,

@@ -90,7 +90,7 @@ export default function DoorProduct() {
         fill="#ffffff"
         y="-74.999999"
         height="899.999994"
-        fill-opacity="1"
+        fillOpacity="1"
       />
       <rect
         x="-75"
@@ -98,9 +98,9 @@ export default function DoorProduct() {
         fill="#ffffff"
         y="-74.999999"
         height="899.999994"
-        fill-opacity="1"
+        fillOpacity="1"
       />
-      <g clip-path="url(#07d9c27b36)">
+      <g clipPath="url(#07d9c27b36)">
         <g transform="matrix(2.408172, 0, 0, 2.407894, -149.370489, -541.79333)">
           <image
             x="0"
@@ -112,7 +112,7 @@ export default function DoorProduct() {
           />
         </g>
       </g>
-      <g clip-path="url(#d32df19e51)">
+      <g clipPath="url(#d32df19e51)">
         <g mask="url(#8d72c995f5)">
           <g transform="matrix(0.0638112, 0, 0, 0.0638298, 261.286632, 357.569652)">
             <image

@@ -1,17 +1,21 @@
 import ProductDetail from "../../../components/products/product-details";
 
-interface ProductPageProps {
+interface PageProps {
   params: Promise<{
     id: string;
   }>;
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductDetailPage({ params }: PageProps) {
   const { id } = await params;
+  return <ProductDetail productId={id} />;
+}
 
-  return (
-    <div className="min-h-screen">
-      <ProductDetail productId={id} />
-    </div>
-  );
+// Optional: Generate metadata for SEO
+export async function generateMetadata({ params }: PageProps) {
+  await params;
+  return {
+    title: `Product Details - Aditya Doors`,
+    description: `View product details`,
+  };
 }

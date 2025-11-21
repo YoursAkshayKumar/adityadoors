@@ -13,19 +13,23 @@ export default function DoorProductTwo() {
         <filter x="0%" y="0%" width="100%" height="100%" id="28d257dfe7">
           <feColorMatrix
             values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
+          />
+          <feColorMatrix
+            values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"
+            colorInterpolationFilters="sRGB"
           />
         </filter>
         <filter x="0%" y="0%" width="100%" height="100%" id="150a8eab62">
           <feColorMatrix
             values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.2126 0.7152 0.0722 0 0"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           />
         </filter>
         <clipPath id="55554f8f6c">
           <path
             d="M 238.816406 44.285156 L 511.066406 44.285156 L 511.066406 705.785156 L 238.816406 705.785156 Z M 238.816406 44.285156 "
-            clip-rule="nonzero"
+            clipRule="nonzero"
           />
         </clipPath>
         <image
@@ -40,7 +44,7 @@ export default function DoorProductTwo() {
         <clipPath id="344bd062fe">
           <path
             d="M 252 361.492188 L 306.570312 361.492188 L 306.570312 388 L 252 388 Z M 252 361.492188 "
-            clip-rule="nonzero"
+            clipRule="nonzero"
           />
         </clipPath>
         <image
@@ -85,7 +89,7 @@ export default function DoorProductTwo() {
         fill="#ffffff"
         y="-74.999999"
         height="899.999994"
-        fill-opacity="1"
+        fillOpacity="1"
       />
       <rect
         x="-75"
@@ -93,9 +97,9 @@ export default function DoorProductTwo() {
         fill="#ffffff"
         y="-74.999999"
         height="899.999994"
-        fill-opacity="1"
+        fillOpacity="1"
       />
-      <g clip-path="url(#55554f8f6c)">
+      <g clipPath="url(#55554f8f6c)">
         <g transform="matrix(2.408172, 0, 0, 2.407894, -471.676078, -541.793378)">
           <image
             x="0"
@@ -107,7 +111,7 @@ export default function DoorProductTwo() {
           />
         </g>
       </g>
-      <g clip-path="url(#344bd062fe)">
+      <g clipPath="url(#344bd062fe)">
         <g mask="url(#63e1bc7778)">
           <g transform="matrix(0.0638112, 0, 0, 0.0638298, 251.820283, 361.492502)">
             <image
