@@ -41,7 +41,7 @@ const sidebar_menu: Array<ISidebarMenus> = [
     link: "/blogs",
     title: "Blogs",
     subMenus: [
-      { title: "BLogs List", link: "/blogs-list" },
+      { title: "Blogs List", link: "/blogs-list" },
       // { title: "Product Grid", link: "/product-grid" },
       { title: "Add Blog", link: "/add-blog" }
     ]

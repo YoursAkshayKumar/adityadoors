@@ -15,6 +15,7 @@ const userOrderRoute = require("./routes/userOrderRoute");
 const cloudinaryRoutes = require("./routes/cloudinaryRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const brandRoutes = require("./routes/brandRoutes");
+const blogRoutes = require("./routes/blogRoutes");
 
 // app init
 const app = express();
@@ -36,6 +37,7 @@ app.use('/api/order', orderRouter);
 app.use('/api/user-order', userOrderRoute);
 app.use("/api/cloudinary", cloudinaryRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/blog", blogRoutes);
 
 // root route
 app.get("/", (req, res) => res.send("Apps worked successfully"));
