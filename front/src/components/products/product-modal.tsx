@@ -281,15 +281,15 @@ export default function ProductModal({
               {/* Price */}
               <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
                 <span className="text-2xl sm:text-4xl font-bold text-gray-900">
-                  ${extendedProduct.price}
+                  ₹{extendedProduct.price}
                 </span>
                 {extendedProduct.originalPrice && (
                   <>
                     <span className="text-lg sm:text-2xl text-gray-500 line-through">
-                      ${extendedProduct.originalPrice}
+                      ₹{extendedProduct.originalPrice}
                     </span>
                     <span className="bg-red-500 text-white px-2 py-1 text-xs sm:text-sm font-bold rounded inline-block w-fit">
-                      Save $
+                      Save ₹
                       {(
                         extendedProduct.originalPrice - extendedProduct.price
                       ).toFixed(2)}

@@ -129,8 +129,7 @@ const OrderTable = () => {
                     )}
                   </td>
                   <td className="px-3 py-3 font-normal text-[#55585B] text-end">
-                    $
-                    {item.cart
+                    ₹{item.cart
                       .reduce((acc, curr) => acc + curr.price, 0)
                       .toFixed(2)}
                   </td>

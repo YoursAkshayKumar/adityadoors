@@ -286,7 +286,7 @@ export default function AddProductModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Price * ($)
+                  Price * (₹)
                 </label>
                 <input
                   type="number"
@@ -307,7 +307,7 @@ export default function AddProductModal({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Original Price ($)
+                  Original Price (₹)
                 </label>
                 <input
                   type="number"
