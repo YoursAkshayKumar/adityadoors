@@ -11,8 +11,8 @@ export default function Footer() {
               <Image src="/logo/aditya-doors-logo.png" alt="logo" width={80} height={80} />
             </h3>
             <p className="text-white mb-4">
-              Quality window blinds and shutters for your home. We provide the
-              best products with professional installation.
+              Aditya Doors delivers premium, handcrafted doors, windows, and custom 
+              interiors built with superior materials for lasting quality since 1995.
             </p>
           </div>
 

@@ -7,32 +7,26 @@ import { Image } from "antd";
 const testimonials = [
   {
     id: 1,
-    name: "Sarah Johnson",
-    role: "Homeowner",
-    image:
-      "http://windazo.like-themes.com/wp-content/uploads/2018/02/01-48x48.jpg",
+    name: "Sahil Sharma",
+    role: "Architect, Muzzafarnagar",
     quote:
-      "The quality of Windazo's wooden shutters exceeded my expectations. The installation team was professional and efficient. My living room has been completely transformed!",
+      "Aditya Doors handled all the major wooden elements for our new construction, including the custom modular kitchen and all the integrated wardrobes. We were highly impressed by their in-house production capability and the attention to detail on every panel and joint. They used high-grade, seasoned wood, and the finish work is flawless. The quick installation was handled meticulously by their team, adhering strictly to the timeline. There were no hidden surprises, and everything fit perfectly thanks to their precise measurements. The pieces feel incredibly robust and durable. If you are looking for long-lasting, custom-designed wooden furnishings and exceptional service, Aditya Doors is the premier choice.",
     rating: 5,
   },
   {
     id: 2,
-    name: "Michael Chen",
-    role: "Interior Designer",
-    image:
-      "http://windazo.like-themes.com/wp-content/uploads/2018/02/02-48x48.jpg",
+    name: "Anshika Bansal",
+    role: "Interior Designer, Delhi",
     quote:
-      "I've been recommending Windazo to all my clients. Their attention to detail and customization options are unmatched in the industry. A truly premium product.",
+      "Our decision to upgrade to Aditya Doors’ performance window systems was a game-changer. The excellent sound insulation has made our home so much quieter, and we appreciate the energy-saving features. Simultaneously, we ordered a set of premium interior doors and frames. The craftsmanship is leagues above standard market offerings; you can immediately feel the weight and superior finish. Their process, from the initial consultation to the final guaranteed installation, was transparent and professional. Their focus on perfect measurement accuracy ensures longevity. They don't just sell wood products; they sell genuine, long-term home solutions backed by a quality promise.",
     rating: 5,
   },
   {
     id: 3,
-    name: "Emma Rodriguez",
-    role: "Apartment Owner",
-    image:
-      "http://windazo.like-themes.com/wp-content/uploads/2018/02/03-48x48.jpg",
+    name: "Simran Sharma",
+    role: "Home Owner, Delhi",
     quote:
-      "The vertical blinds I ordered for my apartment are perfect. The free measurement service ensured a perfect fit, and the installation was quick and hassle-free.",
+      "We also installed their wooden window shutters, which look fantastic and provide phenomenal sound insulation. What truly sets them apart is the service: the free measurement guaranteed a perfect, airtight fit everywhere. The installation team was fast, professional, and efficient, delivering a truly hassle-free experience. Their use of chemically treated, durable wood ensures our investment will last for decades. Highly recommended for professionalism and enduring, genuine quality.",
     rating: 4,
   },
 ];
@@ -104,13 +98,13 @@ export default function TestimonialsSection() {
                     }`}
                   >
                     <div className="flex items-center mb-6">
-                      <div className="relative w-16 h-16 rounded-full overflow-hidden mr-4">
+                      {/* <div className="relative w-16 h-16 rounded-full overflow-hidden mr-4">
                         <Image
                           src={testimonial.image || "/placeholder.svg"}
                           alt={testimonial.name}
                           className="object-cover"
                         />
-                      </div>
+                      </div> */}
                       <div>
                         <h4 className="text-lg font-bold text-gray-900">
                           {testimonial.name}

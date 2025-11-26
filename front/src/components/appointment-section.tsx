@@ -57,10 +57,10 @@ export default function AppointmentSection() {
                 Make an Appointment
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Order Free Window Measuring
+                Ready for an Upgrade?
               </h2>
               <p className="text-gray-300 mb-8">
-                Just fill this form, our manager will contact you for details
+                Schedule Your Free Measurement
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">

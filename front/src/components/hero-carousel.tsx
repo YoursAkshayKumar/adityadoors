@@ -9,28 +9,28 @@ import { Image } from "antd";
 const carouselItems = [
   {
     id: 1,
-    title: "Modern Window",
-    subtitle: "Blinds and Shutters",
+    title: "Every entrance deserves",
+    subtitle: "Aditya Doors",
     description:
-      "Proin rhoncus tincidunt tortor. Aenean non malesuada est, commodo dapibus ipsum. Nam malesuada turpis eget massa aliquet elementum.",
+      "This engineered door made from seasoned wood comes with a 10-year warranty, making it the ideal blend of durability and design for your main door.",
     image: <WindowShuttersImage1 />,
     src: "http://windazo.like-themes.com/wp-content/uploads/2019/05/slide_03_01.png",
   },
   {
     id: 2,
-    title: "Elegant Designs",
-    subtitle: "For Your Home",
+    title: "Smart Security Solutions",
+    subtitle: "by Aditya Doors",
     description:
-      "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed eget libero vel nunc.",
+      "Upgrade security with this digital door lock: offering fingerprint, face recognition, app, card, key, and password access for ultimate convenience and protection.",
     image: <WindowShuttersImage1 />,
     src: "http://windazo.like-themes.com/wp-content/uploads/2019/05/slide_01_01-1.png",
   },
   {
     id: 3,
-    title: "Quality Materials",
-    subtitle: "Built to Last",
+    title: "Crafted Elegance in",
+    subtitle: "Every Sagwan Frame",
     description:
-      "Cras vel magna vel orci rutrum ultricies. Donec vel elit neque. Curabitur tempor dignissim eros ut pretium.",
+      "Our Sagwan door frame is water resistant, chemically treated, and backed by a 10-year warranty — offering unmatched durability, elegance, and long-lasting protection for your home.",
     image: <WindowShuttersImage1 />,
     src: "http://windazo.like-themes.com/wp-content/uploads/2019/05/slide_02_01.png",
   },
@@ -65,7 +65,7 @@ export default function HeroCarousel() {
                 style={{ display: index === currentSlide ? "block" : "none" }}
               >
                 <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 animate-fade-in-up">
-                  {item.title.split("").map((char, i) => (
+                  {/* {item.title.split("").map((char, i) => (
                     <span
                       key={i}
                       className="inline-block animate-fade-in-up"
@@ -73,7 +73,9 @@ export default function HeroCarousel() {
                     >
                       {char}
                     </span>
-                  ))}
+                  ))} */}
+
+                  {item.title}
                 </h1>
                 <h2
                   className="text-4xl md:text-5xl font-bold text-gold mb-6 animate-fade-in-up"

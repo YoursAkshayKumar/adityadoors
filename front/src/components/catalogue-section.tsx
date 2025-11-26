@@ -31,13 +31,13 @@ export default function CatalogueSection() {
             <h2 className="text-3xl md:text-4xl font-bold text-[#3c2a21]">
              Why Choose Us?
             </h2>
-            <p className="text-gray-600 max-w-md">
+            <div className="text-gray-600 max-w-md">
               <ul className="list-group">
                 <li className="list-group-item"><b>Exceptional Craftsmanship:</b> Handcrafted pieces built to last.</li>
                 <li className="list-group-item"><b>Unique Designs:</b> Style that blends modern elegance with classic warmth.</li>
                 <li className="list-group-item"><b>Sustainable Quality:</b> Mindfully sourced materials for peace of mind.</li>
               </ul>
-            </p>
+            </div>
 
             <a  href="catelogue/aditya-doors-product-catelogue.pdf"
                 download 

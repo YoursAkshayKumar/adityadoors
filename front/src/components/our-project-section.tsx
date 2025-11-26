@@ -55,12 +55,10 @@ export default function ProjectsSection() {
             Our Portfolio
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-[#3c2a21] mb-4">
-            Completed Work
+            Where Quality Meets Vision
           </h2>
           <p className="text-[#3c2a21] max-w-3xl mx-auto">
-            Curabitur accumsan iaculis neque, sit amet scelerisque eros.
-            Phasellus hendrerit neque a augue scelerisque, eu mollis mauris
-            bibendum. Etiam vitae metus amet scelerisque eros id eros facilisis.
+           See the Transformation: Inspiring Spaces Created by Aditya Doors. Our finished projects showcase the precision and elegance we bring to homes and commercial spaces nationwide.
           </p>
         </div>
 

@@ -5,154 +5,59 @@ import { useScrollAnimation } from "../hooks/use-scroll-animation";
 import { Search, ArrowRight } from "lucide-react";
 import BlogCard from "./blog-card";
 import FeaturedPost from "./featured-post";
+import { useGetAllBlogsQuery } from "@/redux/features/blog/blogApi";
 
-// Sample blog data
-const blogPosts = [
-  {
-    id: 1,
-    title: "10 Modern Window Trends That Will Transform Your Home in 2024",
-    excerpt:
-      "Discover the latest window design trends that are revolutionizing home aesthetics and functionality. From smart glass to minimalist frames, explore what's hot this year.",
-    content: "Full article content here...",
-    author: "Priya Sharma",
-    date: "2024-01-15",
-    category: "Design Trends",
-    tags: ["Windows", "Design", "2024 Trends", "Modern"],
-    image: "/blog-post-1.png",
-    readTime: "5 min read",
-    featured: true,
-  },
-  {
-    id: 2,
-    title: "The Complete Guide to Choosing the Right Door Hardware",
-    excerpt:
-      "From handles to hinges, locks to latches - everything you need to know about selecting the perfect door hardware for your home's style and security needs.",
-    content: "Full article content here...",
-    author: "Amit Singh",
-    date: "2024-01-12",
-    category: "Hardware Guide",
-    tags: ["Door Hardware", "Security", "Guide", "Home Improvement"],
-    image: "/blog-post-2.png",
-    readTime: "8 min read",
-    featured: false,
-  },
-  {
-    id: 3,
-    title: "Energy Efficiency: How Double Glazed Windows Save You Money",
-    excerpt:
-      "Learn how investing in double glazed windows can significantly reduce your energy bills while improving comfort and adding value to your property.",
-    content: "Full article content here...",
-    author: "Rajesh Kumar",
-    date: "2024-01-10",
-    category: "Energy Efficiency",
-    tags: [
-      "Double Glazing",
-      "Energy Saving",
-      "Cost Reduction",
-      "Sustainability",
-    ],
-    image: "/blog-post-3.png",
-    readTime: "6 min read",
-    featured: true,
-  },
-  {
-    id: 4,
-    title: "Maintenance Tips: Keeping Your Wooden Shutters Looking New",
-    excerpt:
-      "Proper maintenance is key to preserving the beauty and functionality of your wooden shutters. Follow our expert tips for long-lasting results.",
-    content: "Full article content here...",
-    author: "Neha Gupta",
-    date: "2024-01-08",
-    category: "Maintenance",
-    tags: ["Wooden Shutters", "Maintenance", "Care Tips", "Longevity"],
-    image: "/blog-post-4.png",
-    readTime: "4 min read",
-    featured: false,
-  },
-  {
-    id: 5,
-    title: "Smart Home Integration: The Future of Window and Door Technology",
-    excerpt:
-      "Explore how smart technology is revolutionizing windows and doors, from automated blinds to smart locks and everything in between.",
-    content: "Full article content here...",
-    author: "Priya Sharma",
-    date: "2024-01-05",
-    category: "Technology",
-    tags: ["Smart Home", "Technology", "Automation", "Innovation"],
-    image: "/blog-post-5.png",
-    readTime: "7 min read",
-    featured: true,
-  },
-  {
-    id: 6,
-    title: "Color Psychology: Choosing the Right Window Frame Colors",
-    excerpt:
-      "Discover how different window frame colors can impact your home's mood, energy, and overall aesthetic appeal. Make the right choice for your space.",
-    content: "Full article content here...",
-    author: "Priya Sharma",
-    date: "2024-01-03",
-    category: "Design Tips",
-    tags: [
-      "Color Psychology",
-      "Window Frames",
-      "Interior Design",
-      "Aesthetics",
-    ],
-    image: "/blog-post-6.png",
-    readTime: "5 min read",
-    featured: false,
-  },
-];
+type BlogApiItem = {
+  _id: string;
+  title: string;
+  excerpt?: string;
+  content: string;
+  image?: string;
+  tags: string[];
+  status: string;
+  author?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
 
-const categories = [
-  { name: "All Posts", count: blogPosts.length },
-  {
-    name: "Design Trends",
-    count: blogPosts.filter((p) => p.category === "Design Trends").length,
-  },
-  {
-    name: "Hardware Guide",
-    count: blogPosts.filter((p) => p.category === "Hardware Guide").length,
-  },
-  {
-    name: "Energy Efficiency",
-    count: blogPosts.filter((p) => p.category === "Energy Efficiency").length,
-  },
-  {
-    name: "Maintenance",
-    count: blogPosts.filter((p) => p.category === "Maintenance").length,
-  },
-  {
-    name: "Technology",
-    count: blogPosts.filter((p) => p.category === "Technology").length,
-  },
-  {
-    name: "Design Tips",
-    count: blogPosts.filter((p) => p.category === "Design Tips").length,
-  },
-];
+const toUiPost = (b: BlogApiItem, idx: number) => ({
+  id: idx + 1,
+  title: b.title,
+  excerpt: b.excerpt || "",
+  author: b.author || "Admin",
+  date: (b.updatedAt || b.createdAt || new Date().toISOString()) as string,
+  category: (b.tags && b.tags[0]) || "General",
+  tags: b.tags || [],
+  image: b.image || "",
+  readTime: "5 min read",
+  featured: idx < 2,
+});
 
-const popularTags = [
-  "Windows",
-  "Design",
-  "Door Hardware",
-  "Energy Saving",
-  "Smart Home",
-  "Maintenance",
-  "Modern",
-  "Security",
-  "Sustainability",
-  "Innovation",
-];
+const unique = (arr: string[]) => Array.from(new Set(arr));
 
 export default function BlogContent() {
   const [sectionRef, isVisible] = useScrollAnimation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Posts");
   const [selectedTag, setSelectedTag] = useState("");
+  const { data, isLoading, isError } = useGetAllBlogsQuery();
+
+  const blogItems = (data?.result || []) as BlogApiItem[];
+  const uiPosts = useMemo(() => blogItems.filter(b => b.status === "Show").map((b, idx) => toUiPost(b, idx)), [blogItems]);
+
+  const categories = useMemo(() => {
+    const tags = unique(uiPosts.flatMap(p => p.tags));
+    return [{ name: "All Posts", count: uiPosts.length }, ...tags.map(tag => ({ name: tag, count: uiPosts.filter(p => p.tags.includes(tag)).length }))];
+  }, [uiPosts]);
+
+  const popularTags = useMemo(() => {
+    const counts: Record<string, number> = {};
+    uiPosts.forEach(p => p.tags.forEach(t => { counts[t] = (counts[t] || 0) + 1; }));
+    return Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,10).map(([t]) => t);
+  }, [uiPosts]);
 
   const filteredPosts = useMemo(() => {
-    let filtered = blogPosts;
+    let filtered = uiPosts;
 
     // Filter by search term
     if (searchTerm) {
@@ -168,7 +73,7 @@ export default function BlogContent() {
 
     // Filter by category
     if (selectedCategory !== "All Posts") {
-      filtered = filtered.filter((post) => post.category === selectedCategory);
+      filtered = filtered.filter((post) => post.tags.includes(selectedCategory) || post.category === selectedCategory);
     }
 
     // Filter by tag
@@ -177,9 +82,9 @@ export default function BlogContent() {
     }
 
     return filtered;
-  }, [searchTerm, selectedCategory, selectedTag]);
+  }, [searchTerm, selectedCategory, selectedTag, uiPosts]);
 
-  const featuredPosts = blogPosts.filter((post) => post.featured);
+  const featuredPosts = uiPosts.filter((post) => post.featured);
   //   const regularPosts = filteredPosts.filter((post) => !post.featured)
 
   return (
@@ -289,7 +194,10 @@ export default function BlogContent() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredPosts.map((post, index) => (
+              {isLoading && (
+                <div className="text-center py-12"><h3 className="text-xl font-semibold text-gray-600">Loading...</h3></div>
+              )}
+              {!isLoading && !isError && filteredPosts.map((post, index) => (
                 <BlogCard
                   key={post.id}
                   post={post}
@@ -299,7 +207,7 @@ export default function BlogContent() {
               ))}
             </div>
 
-            {filteredPosts.length === 0 && (
+            {!isLoading && filteredPosts.length === 0 && (
               <div className="text-center py-12">
                 <div className="text-gray-400 mb-4">
                   <Search className="h-16 w-16 mx-auto" />
@@ -378,7 +286,7 @@ export default function BlogContent() {
                   Recent Posts
                 </h3>
                 <div className="space-y-4">
-                  {blogPosts.slice(0, 3).map((post) => (
+                  {(!isLoading && !isError ? uiPosts.slice(0, 3) : []).map((post) => (
                     <div key={post.id} className="flex space-x-3">
                       <div className="w-16 h-16 bg-gray-200 rounded-lg flex-shrink-0 flex items-center justify-center">
                         <span className="text-xs text-gray-500">IMG</span>

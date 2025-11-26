@@ -306,10 +306,15 @@ export default function WindowTypesSection() {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-16 max-w-3xl mx-auto">
-          <h3 className="text-xl md:text-1xl font-medium">
+          {/* <h3 className="text-xl md:text-1xl font-medium">
             We produce modern plastic, wooden and aluminum windows according to{" "}
             <span className="text-gold">individual wishes</span> and sizes,
             which satisfy any wishes of our clients
+          </h3> */}
+          <h3 className="text-xl md:text-1xl font-medium">
+            Aditya Doors' wooden window production relies on a meticulous process that blends traditional 
+            craftsmanship with modern, precise manufacturing technology to ensure durability, superior 
+            performance, and custom aesthetics.
           </h3>
         </div>
 
