@@ -41,7 +41,7 @@ app.use("/api/cloudinary", cloudinaryRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/blog", blogRoutes);
 app.use("/api/testimonial", testimonialRoutes);
-app.use("/api/inquiry", inquiryRoutes);
+app.use("/api/inquiries", inquiryRoutes);
 
 // root route
 app.get("/", (req, res) => res.send("Apps worked successfully"));

@@ -5,7 +5,7 @@ export const inquiryApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     addInquiry: builder.mutation({
       query: (data) => ({
-        url: "/api/inquiry/add",
+        url: "api/inquiries/add",
         method: "POST",
         body: data,
       }),

@@ -74,15 +74,21 @@ export default function ProductModal({
   const extendedProduct = getExtendedProductData(product);
 
   // Check if specifications and features exist
-  const hasSpecifications = extendedProduct.specifications && Object.keys(extendedProduct.specifications).length > 0;
-  const hasFeatures = extendedProduct.features && extendedProduct.features.length > 0;
+  // Handle specifications - can be array of objects or object
+  const hasSpecifications = extendedProduct.specifications && (
+    Array.isArray(extendedProduct.specifications) 
+      ? extendedProduct.specifications.length > 0 
+      : typeof extendedProduct.specifications === 'object' && Object.keys(extendedProduct.specifications).length > 0
+  );
+  
+  // Handle features - ensure it's an array and has items
+  const hasFeatures = extendedProduct.features && Array.isArray(extendedProduct.features) && extendedProduct.features.length > 0;
 
   // Available tabs based on data
   const availableTabs = [
     "description",
     ...(hasSpecifications ? ["specifications"] : []),
     ...(hasFeatures ? ["features"] : []),
-    "reviews"
   ];
 
   // Update activeTab if current tab is not available
@@ -278,7 +284,7 @@ export default function ProductModal({
                   ))}
                 </div>
                 <span className="text-sm sm:text-base text-gray-600">
-                  {extendedProduct.rating} ({extendedProduct.reviews} reviews)
+                  {extendedProduct.rating}
                 </span>
               </div>
 
@@ -449,33 +455,51 @@ export default function ProductModal({
                   </div>
                 )}
 
-                {activeTab === "specifications" && hasSpecifications && (
+                {activeTab === "specifications" && hasSpecifications && extendedProduct.specifications && (
                   <div className="space-y-2 sm:space-y-0 sm:grid sm:grid-cols-1 md:grid-cols-2 sm:gap-4">
-                    {Object.entries(extendedProduct.specifications).map(
-                      ([key, value]) => (
+                    {Array.isArray(extendedProduct.specifications) ? (
+                      // New format: array of objects with label and value
+                      extendedProduct.specifications.map((spec: any, index: number) => (
                         <div
-                          key={key}
+                          key={index}
                           className="flex flex-col sm:flex-row sm:justify-between py-2 border-b border-gray-100"
                         >
                           <span className="font-medium text-gray-900 text-sm sm:text-base">
-                            {key}:
+                            {spec?.label || ''}:
                           </span>
                           <span className="text-gray-600 text-sm sm:text-base">
-                            {value}
+                            {spec?.value || ''}
                           </span>
                         </div>
+                      ))
+                    ) : (
+                      // Old format: object with key-value pairs
+                      Object.entries(extendedProduct.specifications).map(
+                        ([key, value]) => (
+                          <div
+                            key={key}
+                            className="flex flex-col sm:flex-row sm:justify-between py-2 border-b border-gray-100"
+                          >
+                            <span className="font-medium text-gray-900 text-sm sm:text-base">
+                              {key}:
+                            </span>
+                            <span className="text-gray-600 text-sm sm:text-base">
+                              {String(value || '')}
+                            </span>
+                          </div>
+                        )
                       )
                     )}
                   </div>
                 )}
 
-                {activeTab === "features" && hasFeatures && (
+                {activeTab === "features" && hasFeatures && extendedProduct.features && (
                   <div className="space-y-3 sm:space-y-0 sm:grid sm:grid-cols-1 md:grid-cols-2 sm:gap-4">
-                    {extendedProduct.features.map((feature, index) => (
-                      <div key={index} className="flex items-center space-x-3">
-                        <Award className="h-4 w-4 sm:h-5 sm:w-5 text-gold flex-shrink-0" />
-                        <span className="text-gray-700 text-sm sm:text-base">
-                          {feature}
+                    {extendedProduct.features.map((feature: string, index: number) => (
+                      <div key={index} className="flex items-start space-x-3 py-2">
+                        <Award className="h-4 w-4 sm:h-5 sm:w-5 text-gold flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-700 text-sm sm:text-base leading-relaxed">
+                          {feature || ''}
                         </span>
                       </div>
                     ))}

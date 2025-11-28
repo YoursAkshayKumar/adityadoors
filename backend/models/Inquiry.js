@@ -2,6 +2,20 @@ const mongoose = require("mongoose");
 
 const inquirySchema = new mongoose.Schema(
   {
+    productName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    productCategory: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    productPrice: {
+      type: Number,
+      required: false,
+    },
     name: {
       type: String,
       required: true,
@@ -12,10 +26,16 @@ const inquirySchema = new mongoose.Schema(
       required: true,
       trim: true,
       lowercase: true,
+      validate: {
+        validator: function(v) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+        },
+        message: 'Please enter a valid email address'
+      }
     },
     phone: {
       type: String,
-      required: false,
+      required: true,
       trim: true,
     },
     subject: {
@@ -26,42 +46,23 @@ const inquirySchema = new mongoose.Schema(
     message: {
       type: String,
       required: true,
+      trim: true,
     },
     inquiryType: {
       type: String,
       enum: ["general", "pricing", "availability", "installation", "customization", "warranty"],
+      required: true,
       default: "general",
-    },
-    product: {
-      id: {
-        type: String,
-        required: true,
-      },
-      name: {
-        type: String,
-        required: true,
-      },
-      category: {
-        type: String,
-        required: true,
-      },
-      price: {
-        type: Number,
-        required: true,
-      },
-      originalPrice: {
-        type: Number,
-        required: false,
-      },
-      image: {
-        type: String,
-        required: false,
-      },
     },
     status: {
       type: String,
       enum: ["pending", "contacted", "resolved", "closed"],
       default: "pending",
+    },
+    // Keep nested product for backward compatibility (optional)
+    product: {
+      type: mongoose.Schema.Types.Mixed,
+      required: false,
     },
   },
   {

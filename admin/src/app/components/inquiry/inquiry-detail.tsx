@@ -83,15 +83,19 @@ const InquiryDetail = ({ id }: { id: string }) => {
           <div className="space-y-4 mb-6">
             <div>
               <label className="text-sm font-medium text-gray-500">Product Name</label>
-              <p className="text-lg font-semibold">{inquiry.product?.name}</p>
+              <p className="text-lg font-semibold">{inquiry.productName || inquiry.product?.name || "N/A"}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-500">Category</label>
-              <p className="text-lg">{inquiry.product?.category}</p>
+              <p className="text-lg">{inquiry.productCategory || inquiry.product?.category || "N/A"}</p>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-500">Price</label>
-              <p className="text-lg">₹{inquiry.product?.price?.toLocaleString()}</p>
+              <p className="text-lg">
+                {inquiry.productPrice || inquiry.product?.price 
+                  ? `₹${(inquiry.productPrice || inquiry.product?.price)?.toLocaleString()}` 
+                  : "N/A"}
+              </p>
             </div>
             {inquiry.product?.image && (
               <div>

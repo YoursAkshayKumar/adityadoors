@@ -1,12 +1,19 @@
 export interface IInquiry {
   _id: string;
+  productName: string;
+  productCategory?: string;
+  productPrice?: number;
   name: string;
   email: string;
-  phone?: string;
+  phone: string;
   subject: string;
   message: string;
   inquiryType: string;
-  product: {
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  // Backward compatibility - optional nested product
+  product?: {
     id: string;
     name: string;
     category: string;
@@ -14,9 +21,6 @@ export interface IInquiry {
     originalPrice?: number;
     image?: string;
   };
-  status: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface InquiryResponse {
@@ -27,11 +31,15 @@ export interface InquiryResponse {
 export interface IAddInquiry {
   name: string;
   email: string;
-  phone?: string;
+  phone: string;
   subject: string;
   message: string;
   inquiryType: string;
-  product: {
+  productName: string;
+  productCategory?: string;
+  productPrice?: number;
+  // Backward compatibility - optional nested product
+  product?: {
     id: string;
     name: string;
     category: string;

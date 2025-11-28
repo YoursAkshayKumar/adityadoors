@@ -61,8 +61,15 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
   } : null;
 
   // Check if specifications and features exist
-  const hasSpecifications = product?.specifications && Object.keys(product.specifications).length > 0;
-  const hasFeatures = product?.features && product.features.length > 0;
+  // Handle specifications - can be array of objects or object
+  const hasSpecifications = product?.specifications && (
+    Array.isArray(product.specifications) 
+      ? product.specifications.length > 0 
+      : typeof product.specifications === 'object' && Object.keys(product.specifications).length > 0
+  );
+  
+  // Handle features - ensure it's an array and has items
+  const hasFeatures = product?.features && Array.isArray(product.features) && product.features.length > 0;
 
   // Available tabs based on data
   const availableTabs = ["description", ...(hasSpecifications ? ["specifications"] : []), ...(hasFeatures ? ["features"] : [])];
@@ -282,7 +289,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                     ))}
                   </div>
                   <span className="text-gray-600">
-                    {product.rating} ({product.reviews} reviews)
+                    {product.rating}
                   </span>
                 </div>
 
@@ -326,19 +333,19 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
               {/* Quantity and Actions */}
               <div className="space-y-4">
                 <div className="flex items-center space-x-4">
-                  <span className="font-medium">Quantity:</span>
-                  <div className="flex items-center border border-gray-300 rounded-lg">
+                  <span className="font-medium text-gray-900">Quantity:</span>
+                  <div className="flex items-center border border-gray-300 rounded-lg bg-white">
                     <button
                       onClick={() => handleQuantityChange(-1)}
-                      className="p-2 hover:bg-gray-100 transition-colors duration-300"
+                      className="p-2 hover:bg-gray-100 transition-colors duration-300 text-gray-700 disabled:text-gray-400"
                       disabled={quantity <= 1}
                     >
                       <Minus className="h-4 w-4" />
                     </button>
-                    <span className="px-4 py-2 font-medium">{quantity}</span>
+                    <span className="px-4 py-2 font-medium text-gray-900">{quantity}</span>
                     <button
                       onClick={() => handleQuantityChange(1)}
-                      className="p-2 hover:bg-gray-100 transition-colors duration-300"
+                      className="p-2 hover:bg-gray-100 transition-colors duration-300 text-gray-700 disabled:text-gray-400"
                       disabled={quantity >= 10}
                     >
                       <Plus className="h-4 w-4" />
@@ -349,13 +356,13 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Button
                     onClick={() => setShowInquiryModal(true)}
-                    className="bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg transition-all duration-300"
+                    className="bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg transition-all duration-300 font-medium"
                   >
                     Buy Now
                   </Button>
                   <Button
                     onClick={() => setShowInquiryModal(true)}
-                    className="border-gold text-gold hover:bg-gold hover:text-white py-3 rounded-lg transition-all duration-300"
+                    className="border-2 border-gold text-gold hover:bg-gold hover:text-white py-3 rounded-lg transition-all duration-300 font-medium"
                   >
                     <MessageSquare className="h-5 w-5 mr-2" />
                     Inquiry
@@ -434,26 +441,40 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                   </div>
                 )}
 
-                {activeTab === "specifications" && hasSpecifications && (
+                {activeTab === "specifications" && hasSpecifications && product.specifications && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {Object.entries(product.specifications).map(([key, value]) => (
-                      <div
-                        key={key}
-                        className="flex justify-between py-3 border-b border-gray-100"
-                      >
-                        <span className="font-medium text-gray-900">{key}:</span>
-                        <span className="text-gray-600">{value}</span>
-                      </div>
-                    ))}
+                    {Array.isArray(product.specifications) ? (
+                      // New format: array of objects with label and value
+                      product.specifications.map((spec: any, index: number) => (
+                        <div
+                          key={index}
+                          className="flex justify-between py-3 border-b border-gray-100"
+                        >
+                          <span className="font-medium text-gray-900">{spec?.label || ''}:</span>
+                          <span className="text-gray-600">{spec?.value || ''}</span>
+                        </div>
+                      ))
+                    ) : (
+                      // Old format: object with key-value pairs
+                      Object.entries(product.specifications).map(([key, value]) => (
+                        <div
+                          key={key}
+                          className="flex justify-between py-3 border-b border-gray-100"
+                        >
+                          <span className="font-medium text-gray-900">{key}:</span>
+                          <span className="text-gray-600">{String(value || '')}</span>
+                        </div>
+                      ))
+                    )}
                   </div>
                 )}
 
-                {activeTab === "features" && hasFeatures && (
+                {activeTab === "features" && hasFeatures && product.features && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {product.features.map((feature, index) => (
-                      <div key={index} className="flex items-center space-x-3">
-                        <Award className="h-5 w-5 text-gold flex-shrink-0" />
-                        <span className="text-gray-700">{feature}</span>
+                    {product.features.map((feature: string, index: number) => (
+                      <div key={index} className="flex items-start space-x-3 py-2">
+                        <Award className="h-5 w-5 text-gold flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-700 leading-relaxed">{feature || ''}</span>
                       </div>
                     ))}
                   </div>

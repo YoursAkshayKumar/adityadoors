@@ -4,7 +4,6 @@ import type React from "react";
 
 import { useState, useEffect } from "react";
 import { X, MessageSquare, User, Mail, Phone, Send } from "lucide-react";
-import { Button } from "antd";
 import { useAddInquiryMutation } from "@/redux/inquiry/inquiryApi";
 import { notifySuccess, notifyError } from "@/utils/toast.js";
 
@@ -74,15 +73,50 @@ export default function InquiryModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+    
+    // Validate required fields
+    if (!formData.name.trim()) {
+      notifyError("Please enter your name");
+      return;
+    }
+    if (!formData.email.trim()) {
+      notifyError("Please enter your email");
+      return;
+    }
+    if (!formData.phone.trim()) {
+      notifyError("Please enter your phone number");
+      return;
+    }
+    if (!formData.subject.trim()) {
+      notifyError("Please enter a subject");
+      return;
+    }
+    if (!formData.message.trim()) {
+      notifyError("Please enter your message");
+      return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      notifyError("Please enter a valid email address");
+      return;
+    }
     
     try {
       const inquiryData = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone || undefined,
-        subject: formData.subject,
-        message: formData.message,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
         inquiryType: formData.inquiryType,
+        // Flat product fields
+        productName: product.name,
+        productCategory: product.category || "",
+        productPrice: product.price || null,
+        // Keep nested product for backward compatibility
         product: {
           id: product.id.toString(),
           name: product.name,
@@ -93,7 +127,8 @@ export default function InquiryModal({
         },
       };
 
-      await addInquiry(inquiryData).unwrap();
+      const result = await addInquiry(inquiryData).unwrap();
+      console.log("Inquiry submitted successfully:", result);
       notifySuccess("Thank you for your inquiry! Our team will contact you within 24 hours.");
       onClose();
       // Reset form
@@ -106,7 +141,9 @@ export default function InquiryModal({
         inquiryType: "general",
       });
     } catch (error: any) {
-      notifyError(error?.data?.message || "Failed to submit inquiry. Please try again.");
+      console.error("Inquiry submission error:", error);
+      const errorMessage = error?.data?.message || error?.message || error?.error || "Failed to submit inquiry. Please try again.";
+      notifyError(errorMessage);
     }
   };
 
@@ -124,7 +161,7 @@ export default function InquiryModal({
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-300"
+            className="absolute top-4 right-4 z-10 p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-300 text-gray-700 hover:text-gray-900"
           >
             <X className="h-5 w-5" />
           </button>
@@ -155,7 +192,7 @@ export default function InquiryModal({
                   name="inquiryType"
                   value={formData.inquiryType}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent text-gray-900 bg-white"
                 >
                   <option value="general">General Information</option>
                   <option value="pricing">Pricing & Quotes</option>
@@ -177,7 +214,7 @@ export default function InquiryModal({
                     onChange={handleChange}
                     placeholder="Your Name *"
                     required
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent"
+                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent text-gray-900 bg-white placeholder:text-gray-400"
                   />
                 </div>
 
@@ -190,7 +227,7 @@ export default function InquiryModal({
                     onChange={handleChange}
                     placeholder="Your Email *"
                     required
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent"
+                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent text-gray-900 bg-white placeholder:text-gray-400"
                   />
                 </div>
               </div>
@@ -202,8 +239,9 @@ export default function InquiryModal({
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="Your Phone Number"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent"
+                  placeholder="Your Phone Number *"
+                  required
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent text-gray-900 bg-white placeholder:text-gray-400"
                 />
               </div>
 
@@ -219,7 +257,7 @@ export default function InquiryModal({
                   onChange={handleChange}
                   placeholder="Subject *"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent text-gray-900 bg-white placeholder:text-gray-400"
                 />
               </div>
 
@@ -235,7 +273,7 @@ export default function InquiryModal({
                   placeholder="Please describe your inquiry in detail..."
                   required
                   rows={5}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent resize-none text-gray-900 bg-white placeholder:text-gray-400"
                 />
               </div>
 
@@ -254,24 +292,33 @@ export default function InquiryModal({
 
               {/* Submit Button */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button
+                <button
                   type="submit"
-                  loading={isSubmitting}
                   disabled={isSubmitting}
-                  className="flex-1 bg-gold hover:bg-gold-dark text-white py-3 rounded-lg transition-all duration-300 flex items-center justify-center"
+                  className="flex-1 bg-gold hover:bg-gold-dark text-white py-3 rounded-lg transition-all duration-300 flex items-center justify-center font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Send className="mr-2 h-5 w-5" />
-                  Send Inquiry
-                </Button>
-                <Button
-                  typeof="button"
-                  //   type="button"
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-5 w-5" />
+                      Send Inquiry
+                    </>
+                  )}
+                </button>
+                <button
+                  type="button"
                   onClick={onClose}
-                  //   variant="outline"
-                  className="flex-1 sm:flex-none sm:px-8 py-3 rounded-lg bg-transparent"
+                  className="flex-1 sm:flex-none sm:px-8 py-3 rounded-lg bg-transparent border border-gray-300 text-gray-700 hover:bg-gray-50 hover:text-gray-900 font-medium"
                 >
                   Cancel
-                </Button>
+                </button>
               </div>
             </form>
           </div>

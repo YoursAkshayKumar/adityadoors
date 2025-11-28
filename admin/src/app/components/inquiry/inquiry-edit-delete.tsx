@@ -1,14 +1,18 @@
 "use client";
-import Link from "next/link";
 import Swal from "sweetalert2";
-import React, { useState } from "react";
-import { Delete, Eye } from "@/svg";
+import React from "react";
+import { Delete, View } from "@/svg";
 import { notifyError } from "@/utils/toast";
 import DeleteTooltip from "../tooltip/delete-tooltip";
 import ViewTooltip from "../tooltip/view-tooltip";
 import { useDeleteInquiryMutation } from "@/redux/inquiry/inquiryApi";
 
-const InquiryEditDelete = ({ id }: { id: string }) => {
+interface InquiryEditDeleteProps {
+  id: string;
+  onViewClick: (id: string) => void;
+}
+
+const InquiryEditDelete = ({ id, onViewClick }: InquiryEditDeleteProps) => {
   const [deleteInquiry] = useDeleteInquiryMutation();
 
   const handleDelete = async () => {
@@ -35,13 +39,14 @@ const InquiryEditDelete = ({ id }: { id: string }) => {
   return (
     <>
       <div className="flex items-center justify-end space-x-2">
-        <Link href={`/inquiries/${id}`}>
-          <ViewTooltip>
-            <button className="text-gray-500 hover:text-blue-500 transition-colors">
-              <Eye />
-            </button>
-          </ViewTooltip>
-        </Link>
+        <ViewTooltip>
+          <button 
+            onClick={() => onViewClick(id)}
+            className="text-gray-500 hover:text-blue-500 transition-colors"
+          >
+            <View />
+          </button>
+        </ViewTooltip>
         <DeleteTooltip>
           <button
             onClick={handleDelete}
