@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { Close } from "@/svg";
 import { useGetInquiryQuery } from "@/redux/inquiry/inquiryApi";
 import Loading from "../common/loading";
 import ErrorMsg from "../common/error-msg";
-import { IInquiry } from "@/types/inquiry-type";
 
 interface InquiryViewModalProps {
   inquiryId: string | null;
@@ -120,11 +120,15 @@ const InquiryViewModal = ({ inquiryId, isOpen, onClose }: InquiryViewModalProps)
                     {inquiry.product?.image && (
                       <div>
                         <label className="text-sm font-medium text-gray-700 block mb-1">Product Image</label>
-                        <img
-                          src={inquiry.product.image}
-                          alt={inquiry.productName || inquiry.product?.name || "Product"}
-                          className="mt-2 w-32 h-32 object-cover rounded border border-gray-200"
-                        />
+                        <div className="mt-2 relative w-32 h-32 border border-gray-200 rounded">
+                          <Image
+                            src={inquiry.product.image}
+                            alt={inquiry.productName || inquiry.product?.name || "Product"}
+                            fill
+                            className="object-cover rounded"
+                            sizes="128px"
+                          />
+                        </div>
                       </div>
                     )}
                   </div>

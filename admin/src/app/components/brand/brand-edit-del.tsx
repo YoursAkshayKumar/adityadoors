@@ -33,7 +33,7 @@ const BrandEditDelete = ({ id }: IPropType) => {
       if (result.isConfirmed) {
         try {
           const res = await deleteBrand(id);
-          if ("error" in res) {
+          if ("error" in res && res.error) {
             if ("data" in res.error) {
               const errorData = res.error.data as { message?: string };
               if (typeof errorData.message === "string") {

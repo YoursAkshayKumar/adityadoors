@@ -37,7 +37,7 @@ const ForgetPasswordPage = () => {
       password: data.password,
       token,
     });
-    if ("error" in res) {
+    if ("error" in res && res.error) {
       if ("data" in res.error) {
         const errorData = res.error.data as { message?: string };
         if (typeof errorData.message === "string") {
@@ -45,7 +45,7 @@ const ForgetPasswordPage = () => {
         }
       }
     } else {
-      if ("data" in res) {
+      if ("data" in res && res.data) {
         if("message" in res.data){
           notifySuccess(res.data.message);
         }

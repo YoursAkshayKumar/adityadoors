@@ -26,7 +26,7 @@ const RegisterForm = () => {
   // on submit
   const onSubmit = async (data:{name:string;email:string;password:string}) => {
     const res = await registerAdmin({name:data.name,email:data.email,password:data.password});
-    if ("error" in res) {
+    if ("error" in res && res.error) {
       if ("data" in res.error) {
         const errorData = res.error.data as { message?: string };
         if (typeof errorData.message === "string") {

@@ -14,6 +14,7 @@ interface InquiryEditDeleteProps {
 
 const InquiryEditDelete = ({ id, onViewClick }: InquiryEditDeleteProps) => {
   const [deleteInquiry] = useDeleteInquiryMutation();
+  const [showDelete, setShowDelete] = React.useState<boolean>(false);
 
   const handleDelete = async () => {
     const result = await Swal.fire({
@@ -47,14 +48,17 @@ const InquiryEditDelete = ({ id, onViewClick }: InquiryEditDeleteProps) => {
             <View />
           </button>
         </ViewTooltip>
-        <DeleteTooltip>
+        <div className="relative">
           <button
             onClick={handleDelete}
+            onMouseEnter={() => setShowDelete(true)}
+            onMouseLeave={() => setShowDelete(false)}
             className="text-gray-500 hover:text-red-500 transition-colors"
           >
             <Delete />
           </button>
-        </DeleteTooltip>
+          <DeleteTooltip showDelete={showDelete} />
+        </div>
       </div>
     </>
   );

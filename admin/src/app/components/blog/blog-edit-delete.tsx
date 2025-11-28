@@ -25,7 +25,7 @@ const BlogEditDelete = ({ id }: { id: string }) => {
       if (result.isConfirmed) {
         try {
           const res = await deleteBlog(blogId);
-          if ("error" in res) {
+          if ("error" in res && res.error) {
             if ("data" in res.error) {
               const errorData = res.error.data as { message?: string };
               if (typeof errorData.message === "string") {

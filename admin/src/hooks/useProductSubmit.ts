@@ -93,7 +93,7 @@ const useProductSubmit = () => {
     } else {
       const res = await addProduct(productData);
 
-      if ("error" in res) {
+      if ("error" in res && res.error) {
         if ("data" in res.error) {
           const errorData = res.error.data as { message?: string, errorMessages?: { path: string, message: string }[] };
           if (errorData.errorMessages && Array.isArray(errorData.errorMessages)) {
@@ -161,7 +161,7 @@ const useProductSubmit = () => {
     };
 
     const res = await editProduct({ id: id, data: productData })
-    if ("error" in res) {
+    if ("error" in res && res.error) {
       if ("data" in res.error) {
         const errorData = res.error.data as { message?: string, errorMessages?: { path: string, message: string }[] };
         if (errorData.errorMessages && Array.isArray(errorData.errorMessages)) {

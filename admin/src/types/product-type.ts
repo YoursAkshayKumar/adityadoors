@@ -51,7 +51,7 @@ export interface IAddProduct {
   discount?: number;
   relatedImages: string[];
   description: string;
-  brand: {
+  brand?: {
     name:string;
     id:string;
   };

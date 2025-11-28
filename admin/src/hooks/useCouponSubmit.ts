@@ -48,7 +48,7 @@ const useCouponSubmit = () => {
       };
 
       const res = await addCoupon({ ...coupon_data });
-      if ("error" in res) {
+      if ("error" in res && res.error) {
         if ("data" in res.error) {
           const errorData = res.error.data as { message?: string };
           if (typeof errorData.message === "string") {
@@ -82,7 +82,7 @@ const useCouponSubmit = () => {
         productType: selectProductType,
       };
       const res = await editCoupon({ id, data: coupon_data });
-      if ("error" in res) {
+      if ("error" in res && res.error) {
         if ("data" in res.error) {
           const errorData = res.error.data as { message?: string };
           if (typeof errorData.message === "string") {

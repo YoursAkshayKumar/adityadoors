@@ -40,7 +40,7 @@ const useCategorySubmit = () => {
       //   return notifyError('Children is required')
       // }
       const res = await addCategory({ ...category_data });
-      if ("error" in res) {
+      if ("error" in res && res.error) {
         if ("data" in res.error) {
           const errorData = res.error.data as { message?: string };
           if (typeof errorData.message === "string") {
@@ -73,7 +73,7 @@ const useCategorySubmit = () => {
       }
       const res = await editCategory({ id, data: category_data });
       // console.log(res)
-      if ("error" in res) {
+      if ("error" in res && res.error) {
         if ("data" in res.error) {
           const errorData = res.error.data as { message?: string };
           if (typeof errorData.message === "string") {

@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { useGetInquiryQuery, useUpdateInquiryMutation } from "@/redux/inquiry/inquiryApi";
 import Loading from "../common/loading";
 import ErrorMsg from "../common/error-msg";
@@ -100,11 +101,15 @@ const InquiryDetail = ({ id }: { id: string }) => {
             {inquiry.product?.image && (
               <div>
                 <label className="text-sm font-medium text-gray-500">Product Image</label>
-                <img
-                  src={inquiry.product.image}
-                  alt={inquiry.product.name}
-                  className="mt-2 w-32 h-32 object-cover rounded"
-                />
+                <div className="mt-2 relative w-32 h-32">
+                  <Image
+                    src={inquiry.product.image}
+                    alt={inquiry.product.name || "Product"}
+                    fill
+                    className="object-cover rounded"
+                    sizes="128px"
+                  />
+                </div>
               </div>
             )}
           </div>
