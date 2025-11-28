@@ -11,8 +11,6 @@ import ProductCategory from "../../category/product-category";
 import Tags from "./tags";
 import FormField from "../form-field";
 import Colors from "./colors";
-import Features from "./features";
-import Specifications from "./specifications";
 
 const ProductSubmit = () => {
   const {
@@ -34,10 +32,6 @@ const ProductSubmit = () => {
     setRelatedImages,
     setColors,
     colors,
-    features,
-    setFeatures,
-    specifications,
-    setSpecifications,
   } = useProductSubmit();
 
   console.log("related image", relatedImages);
@@ -118,20 +112,6 @@ const ProductSubmit = () => {
             relatedImages={relatedImages}
           />
           {/* product variations end */}
-
-          {/* Features and Specifications */}
-          <div className="bg-white px-8 py-8 rounded-md mb-6">
-            <h4 className="text-[22px] mb-4">Product Features</h4>
-            <Features features={features} setFeatures={setFeatures} />
-          </div>
-
-          <div className="bg-white px-8 py-8 rounded-md mb-6">
-            <h4 className="text-[22px] mb-4">Product Specifications</h4>
-            <Specifications
-              specifications={specifications}
-              setSpecifications={setSpecifications}
-            />
-          </div>
         </div>
 
         {/* right side */}

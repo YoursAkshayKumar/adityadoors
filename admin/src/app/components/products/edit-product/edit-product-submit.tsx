@@ -11,8 +11,6 @@ import ProductVariants from "../add-product/product-variants";
 import ProductImgUpload from "../add-product/product-img-upload";
 import Tags from "../add-product/tags";
 import ProductCategory from "../../category/product-category";
-import Features from "../add-product/features";
-import Specifications from "../add-product/specifications";
 
 const EditProductSubmit = ({ id }: { id: string }) => {
   const { data: product, isError, isLoading } = useGetProductQuery(id);
@@ -35,10 +33,6 @@ const EditProductSubmit = ({ id }: { id: string }) => {
     setColors,
     colors,
     handleEditProduct,
-    features,
-    setFeatures,
-    specifications,
-    setSpecifications,
   } = useProductSubmit();
 
   // Initialize all state when product loads
@@ -64,14 +58,6 @@ const EditProductSubmit = ({ id }: { id: string }) => {
       if (product.brand) {
         setBrand(product.brand);
       }
-      // Initialize features (always set, even if empty array)
-      const productFeatures = Array.isArray(product.features) ? product.features : (product.features ? [product.features] : []);
-      setFeatures(productFeatures);
-      // Initialize specifications (always set, even if empty object)
-      const productSpecs = product.specifications && typeof product.specifications === 'object' && !Array.isArray(product.specifications) 
-        ? product.specifications 
-        : {};
-      setSpecifications(productSpecs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product]);
@@ -177,27 +163,6 @@ const EditProductSubmit = ({ id }: { id: string }) => {
               default_value={product.relatedImages}
             />
             {/* product variations end */}
-
-            {/* Features and Specifications */}
-            <div className="bg-white px-8 py-8 rounded-md mb-6">
-              <h4 className="text-[22px] mb-4">Product Features</h4>
-              <Features
-                key={`features-${product._id}`}
-                features={features}
-                setFeatures={setFeatures}
-                default_value={product.features}
-              />
-            </div>
-
-            <div className="bg-white px-8 py-8 rounded-md mb-6">
-              <h4 className="text-[22px] mb-4">Product Specifications</h4>
-              <Specifications
-                key={`specifications-${product._id}`}
-                specifications={specifications}
-                setSpecifications={setSpecifications}
-                default_value={product.specifications}
-              />
-            </div>
           </div>
 
           {/* right side */}
