@@ -45,5 +45,7 @@ export const apiSlice = createApi({
     "getTestimonial",
     "AllInquiries",
     "getInquiry",
+    "AllFAQs",
+    "getFAQ",
   ],
 });

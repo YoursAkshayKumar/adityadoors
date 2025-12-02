@@ -64,18 +64,28 @@ const sidebar_menu: Array<ISidebarMenus> = [
   },
   {
     id: 7,
+    icon: Pages,
+    link: "/faqs-list",
+    title: "FAQs",
+    subMenus: [
+      { title: "FAQs List", link: "/faqs-list" },
+      { title: "Add FAQ", link: "/add-faq" }
+    ]
+  },
+  {
+    id: 8,
     icon: Profile,
     link: "/profile",
     title: "Profile",
   },
   {
-    id: 8,
+    id: 9,
     icon: Setting,
     link: "#",
     title: "Online store",
   },
   {
-    id: 9,
+    id: 10,
     icon: Pages,
     link: "/dashboard",
     title: "Pages",

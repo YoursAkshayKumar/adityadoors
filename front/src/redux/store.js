@@ -10,6 +10,8 @@ import productSlice from './features/productSlice';
 import './testimonial/testimonialApi';
 // Import inquiry API to register endpoints
 import './inquiry/inquiryApi';
+// Import FAQ API to register endpoints
+import './faq/faqApi';
 
 
 export const store = configureStore({

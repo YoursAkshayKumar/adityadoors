@@ -18,6 +18,7 @@ const brandRoutes = require("./routes/brandRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const testimonialRoutes = require("./routes/testimonialRoutes");
 const inquiryRoutes = require("./routes/inquiryRoutes");
+const faqRoutes = require("./routes/faqRoutes");
 
 // app init
 const app = express();
@@ -42,6 +43,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/blog", blogRoutes);
 app.use("/api/testimonial", testimonialRoutes);
 app.use("/api/inquiries", inquiryRoutes);
+app.use("/api/faq", faqRoutes);
 
 // root route
 app.get("/", (req, res) => res.send("Apps worked successfully"));
