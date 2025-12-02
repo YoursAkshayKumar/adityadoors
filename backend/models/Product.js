@@ -97,6 +97,11 @@ const productSchema = mongoose.Schema({
     required: false,
     default: false,
   },
+  isPopular: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
   status: {
     type: String,
     default: 'active',

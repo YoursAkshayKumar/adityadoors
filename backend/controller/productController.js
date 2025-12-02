@@ -63,7 +63,12 @@ module.exports.getShowingProducts = async (req, res, next) => {
 // get all show products
 module.exports.getPopularProducts = async (req, res, next) => {
   try {
-    const result = await Product.find({ status: "active" });
+    const result = await Product.find({ 
+      status: "active",
+      isPopular: true 
+    })
+    .sort({ createdAt: -1 }) // Sort by latest first
+    .limit(8); // Limit to 8 products
     res.json({
       success: true,
       products: result,

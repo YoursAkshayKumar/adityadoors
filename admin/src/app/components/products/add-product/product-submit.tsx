@@ -106,16 +106,26 @@ const ProductSubmit = () => {
           </div>
 
            <div className="bg-white px-8 py-8 rounded-md mb-6">
-              <h4 className="text-[18px] mb-4">Sale Options</h4>
+              <h4 className="text-[18px] mb-4">Product Options</h4>
 
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  {...register("onSale")}
-                  className="w-4 h-4"
-                />
-                <span className="text-sm text-black">On Sale</span>
-              </label>
+              <div className="flex flex-col gap-4">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    {...register("isOnSale")}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-sm text-black">On Sale</span>
+                </label>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    {...register("isPopular")}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-sm text-black">Popular Product</span>
+                </label>
+              </div>
             </div>
 
           {/* product variations start */}

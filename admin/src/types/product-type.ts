@@ -28,6 +28,7 @@ export interface IProduct {
   type?: string;
   itemInfo?: string;
   status: string;
+  isPopular?: boolean;
   features?: string[];
   specifications?: Array<{ label: string; value: string }>;
   fullDescription?: string;
@@ -66,6 +67,7 @@ export interface IAddProduct {
   itemInfo?: string;
   status?: string;
   isOnSale?: boolean;
+  isPopular?: boolean;
   features?: string[];
   specifications?: Array<{ label: string; value: string }>;
   fullDescription?: string;
