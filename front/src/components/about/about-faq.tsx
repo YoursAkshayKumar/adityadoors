@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useScrollAnimation } from "../hooks/use-scroll-animation";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useGetActiveFAQsQuery } from "@/redux/faq/faqApi";
@@ -38,16 +38,6 @@ export default function AboutFAQ() {
     
     return [];
   }, [faqsData]);
-
-  useEffect(() => {
-    console.log("=== FAQ DEBUG ===");
-    console.log("FAQ Data:", faqsData);
-    console.log("FAQ Loading:", isLoading);
-    console.log("FAQ Error:", isError);
-    console.log("FAQs Array:", faqs);
-    console.log("FAQs Count:", faqs.length);
-    console.log("==================");
-  }, [faqsData, isLoading, isError, faqs]);
 
   const toggleFAQ = (id: string) => {
     setOpenFAQ(openFAQ === id ? null : id);
