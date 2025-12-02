@@ -7,6 +7,7 @@ export interface ITestimonial {
   image?: string;
   status: string;
   order?: number;
+  category?: number; // 1 = Home Page, 2 = About Us, 3 = Both
 }
 
 export interface TestimonialResponse {
@@ -22,5 +23,6 @@ export interface IAddTestimonial {
   image?: string;
   status?: string;
   order?: number;
+  category?: number; // 1 = Home Page, 2 = About Us, 3 = Both
 }
 

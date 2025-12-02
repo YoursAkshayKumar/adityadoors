@@ -15,7 +15,7 @@ interface Testimonial {
 }
 
 export default function TestimonialsSection() {
-  const { data: testimonialsData, isLoading, isError } = useGetActiveTestimonialsQuery(undefined);
+  const { data: testimonialsData, isLoading, isError } = useGetActiveTestimonialsQuery(1); // 1 = Home Page
   
   // Handle different possible response structures
   const testimonials = React.useMemo((): Testimonial[] => {

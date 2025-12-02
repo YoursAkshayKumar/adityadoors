@@ -17,6 +17,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const brandRoutes = require("./routes/brandRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const testimonialRoutes = require("./routes/testimonialRoutes");
+const portfolioRoutes = require("./routes/portfolioRoutes");
 const inquiryRoutes = require("./routes/inquiryRoutes");
 const faqRoutes = require("./routes/faqRoutes");
 
@@ -42,6 +43,7 @@ app.use("/api/cloudinary", cloudinaryRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/blog", blogRoutes);
 app.use("/api/testimonial", testimonialRoutes);
+app.use("/api/portfolio", portfolioRoutes);
 app.use("/api/inquiries", inquiryRoutes);
 app.use("/api/faq", faqRoutes);
 

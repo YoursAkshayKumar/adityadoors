@@ -8,6 +8,8 @@ import wishlistSlice from './features/wishlist-slice';
 import productSlice from './features/productSlice';
 // Import testimonial API to register endpoints
 import './testimonial/testimonialApi';
+// Import portfolio API to register endpoints
+import './portfolio/portfolioApi';
 // Import inquiry API to register endpoints
 import './inquiry/inquiryApi';
 // Import FAQ API to register endpoints

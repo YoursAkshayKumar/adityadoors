@@ -188,3 +188,78 @@ body {
 .animate-fade-in {
   animation: fade-in 0.6s ease-out forwards;
 }
+
+/* ============================================
+   HERO CAROUSEL - MOBILE STYLES
+   Edit mobile-specific styles for the hero carousel below
+   Use the class name: .hero-carousel-wrapper to target the main container
+   ============================================ */
+
+/* Mobile styles for hero carousel slider (screens up to 640px) */
+@media (max-width: 640px) {
+  /* Main carousel container */
+  .hero-carousel-wrapper {
+    /* Example: Adjust minimum height
+    min-height: 500px !important;
+    */
+  }
+  
+  /* Text content inside carousel - h1, h2, p */
+  .hero-carousel-wrapper h1 {
+    /* Example: Adjust heading size
+    font-size: 1.75rem !important;
+    line-height: 1.2 !important;
+    */
+  }
+  
+  .hero-carousel-wrapper h2 {
+    /* Example: Adjust subtitle
+    font-size: 1.75rem !important;
+    */
+  }
+  
+  .hero-carousel-wrapper p {
+    /* Example: Adjust description text
+    font-size: 0.875rem !important;
+    */
+  }
+  
+  /* Product images */
+  .hero-carousel-wrapper img.slider-product-image {
+    margin-top: 25%;
+    width: 90%;
+
+  }
+  
+  /* Buttons */
+  .hero-carousel-wrapper a {
+    /* Example: Adjust button styles
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.75rem !important;
+    */
+  }
+  
+  /* Carousel indicators (dots) */
+  .hero-carousel-wrapper button[aria-label*="slide"] {
+    /* Example: Adjust indicator dots
+    width: 8px !important;
+    height: 8px !important;
+    */
+  }
+}
+
+/* Tablet styles (641px - 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* Add your tablet-specific styles here */
+  .hero-carousel-wrapper {
+    /* Example styles */
+  }
+}
+
+/* Mobile and Tablet combined (up to 1024px) */
+@media (max-width: 1024px) {
+  /* Add styles for both mobile and tablet here */
+  .hero-carousel-wrapper {
+    /* Example styles */
+  }
+}

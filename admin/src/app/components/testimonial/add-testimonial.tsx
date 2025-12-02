@@ -11,6 +11,8 @@ const AddTestimonial = () => {
     errors,
     status,
     setStatus,
+    category,
+    setCategory,
     setValue,
     handleSubmitTestimonial,
   } = useTestimonialSubmit();
@@ -28,8 +30,19 @@ const AddTestimonial = () => {
     { value: "5", label: "5 Stars" },
   ];
 
+  const categoryOptions = [
+    { value: 1, label: "Home Page" },
+    { value: 2, label: "About Us" },
+    { value: 3, label: "Both" },
+  ];
+
   const handleChange = (value: string | number | undefined) => {
     setStatus(value as string);
+  };
+
+  const handleCategoryChange = (value: string | number | undefined) => {
+    const numValue = typeof value === 'string' ? parseInt(value, 10) : (value || 1);
+    setCategory([1, 2, 3].includes(numValue) ? numValue : 1);
   };
 
   return (
@@ -88,6 +101,18 @@ const AddTestimonial = () => {
                 defaultValue={statusOptions[0]}
                 onChange={(selected) => {
                   handleChange(selected?.value);
+                }}
+                className="react-select-input"
+                classNamePrefix="react-select"
+              />
+            </div>
+            <div className="mb-5">
+              <p className="mb-0 text-base text-black mb-2">Category/Type</p>
+              <ReactSelect
+                options={categoryOptions}
+                defaultValue={categoryOptions[0]}
+                onChange={(selected) => {
+                  handleCategoryChange(selected?.value);
                 }}
                 className="react-select-input"
                 classNamePrefix="react-select"

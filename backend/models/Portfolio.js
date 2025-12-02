@@ -1,31 +1,24 @@
 const mongoose = require("mongoose");
 
-const testimonialSchema = new mongoose.Schema(
+const portfolioSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
       trim: true,
     },
-    role: {
+    number: {
       type: String,
       required: true,
       trim: true,
     },
-    quote: {
-      type: String,
-      required: true,
-    },
-    rating: {
-      type: Number,
-      required: true,
-      min: 1,
-      max: 5,
-      default: 5,
-    },
     image: {
       type: String,
-      required: false,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
     },
     status: {
       type: String,
@@ -36,15 +29,10 @@ const testimonialSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    category: {
-      type: Number,
-      enum: [1, 2, 3], // 1 = Home Page, 2 = About Us, 3 = Both
-      default: 1,
-    },
   },
   { timestamps: true }
 );
 
-const Testimonial = mongoose.model("Testimonial", testimonialSchema);
-module.exports = Testimonial;
+const Portfolio = mongoose.model("Portfolio", portfolioSchema);
+module.exports = Portfolio;
 

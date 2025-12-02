@@ -58,12 +58,22 @@ const sidebar_menu: Array<ISidebarMenus> = [
   },
   {
     id: 6,
+    icon: Pages,
+    link: "/portfolios-list",
+    title: "Portfolio",
+    subMenus: [
+      { title: "Portfolios List", link: "/portfolios-list" },
+      { title: "Add Portfolio", link: "/add-portfolio" }
+    ]
+  },
+  {
+    id: 7,
     icon: Reviews,
     link: "/inquiries-list",
     title: "Inquiries",
   },
   {
-    id: 7,
+    id: 8,
     icon: Pages,
     link: "/faqs-list",
     title: "FAQs",
@@ -73,19 +83,19 @@ const sidebar_menu: Array<ISidebarMenus> = [
     ]
   },
   {
-    id: 8,
+    id: 9,
     icon: Profile,
     link: "/profile",
     title: "Profile",
   },
   {
-    id: 9,
+    id: 10,
     icon: Setting,
     link: "#",
     title: "Online store",
   },
   {
-    id: 10,
+    id: 11,
     icon: Pages,
     link: "/dashboard",
     title: "Pages",

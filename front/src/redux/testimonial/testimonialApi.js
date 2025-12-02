@@ -4,8 +4,13 @@ export const testimonialApi = apiSlice.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
     getActiveTestimonials: builder.query({
-      query: () => `/api/testimonial/active`,
-      providesTags: ["Testimonials"],
+      query: (category) => {
+        const params = category ? `?category=${encodeURIComponent(category)}` : '';
+        return `/api/testimonial/active${params}`;
+      },
+      providesTags: (result, error, category) => [
+        { type: "Testimonials", id: category || "all" },
+      ],
       keepUnusedDataFor: 600,
     }),
   }),

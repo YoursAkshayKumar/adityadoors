@@ -43,6 +43,8 @@ export const apiSlice = createApi({
     "getBlog",
     "AllTestimonials",
     "getTestimonial",
+    "AllPortfolios",
+    "getPortfolio",
     "AllInquiries",
     "getInquiry",
     "AllFAQs",

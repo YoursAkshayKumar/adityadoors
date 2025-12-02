@@ -14,6 +14,8 @@ const EditTestimonial = ({ id }: { id: string }) => {
     errors,
     status,
     setStatus,
+    category,
+    setCategory,
     setValue,
     handleSubmitEditTestimonial,
   } = useTestimonialSubmit();
@@ -28,8 +30,16 @@ const EditTestimonial = ({ id }: { id: string }) => {
       setValue("rating", testimonial.rating.toString());
       setValue("order", testimonial.order?.toString() || "0");
       setStatus(testimonial.status);
+      // Handle both string (old) and number (new) category formats for backward compatibility
+      const categoryValue = typeof testimonial.category === 'number' 
+        ? testimonial.category 
+        : testimonial.category === "Home Page" ? 1 
+        : testimonial.category === "About Us" ? 2 
+        : testimonial.category === "Both" ? 3 
+        : 1;
+      setCategory(categoryValue);
     }
-  }, [testimonial, setValue, setStatus]);
+  }, [testimonial, setValue, setStatus, setCategory]);
 
   const statusOptions = [
     { value: "Show", label: "Show" },
@@ -44,8 +54,19 @@ const EditTestimonial = ({ id }: { id: string }) => {
     { value: "5", label: "5 Stars" },
   ];
 
+  const categoryOptions = [
+    { value: 1, label: "Home Page" },
+    { value: 2, label: "About Us" },
+    { value: 3, label: "Both" },
+  ];
+
   const handleChange = (value: string | number | undefined) => {
     setStatus(value as string);
+  };
+
+  const handleCategoryChange = (value: string | number | undefined) => {
+    const numValue = typeof value === 'string' ? parseInt(value, 10) : (value || 1);
+    setCategory([1, 2, 3].includes(numValue) ? numValue : 1);
   };
 
   let content = null;
@@ -111,6 +132,27 @@ const EditTestimonial = ({ id }: { id: string }) => {
                   defaultValue={statusOptions.find(opt => opt.value === testimonial.status) || statusOptions[0]}
                   onChange={(selected) => {
                     handleChange(selected?.value);
+                  }}
+                  className="react-select-input"
+                  classNamePrefix="react-select"
+                />
+              </div>
+              <div className="mb-5">
+                <p className="mb-0 text-base text-black mb-2">Category/Type</p>
+                <ReactSelect
+                  options={categoryOptions}
+                  defaultValue={categoryOptions.find(opt => {
+                    // Handle both string (old) and number (new) category formats
+                    const testimonialCategory = typeof testimonial.category === 'number' 
+                      ? testimonial.category 
+                      : testimonial.category === "Home Page" ? 1 
+                      : testimonial.category === "About Us" ? 2 
+                      : testimonial.category === "Both" ? 3 
+                      : 1;
+                    return opt.value === testimonialCategory;
+                  }) || categoryOptions[0]}
+                  onChange={(selected) => {
+                    handleCategoryChange(selected?.value);
                   }}
                   className="react-select-input"
                   classNamePrefix="react-select"

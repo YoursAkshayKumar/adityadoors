@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MoveRight } from "lucide-react";
+import { MoveRight, ChevronLeft, ChevronRight } from "lucide-react";
 import WindowShuttersImage1 from "./window-shutters-image1";
 import { Image } from "antd";
 
@@ -14,6 +14,7 @@ const carouselItems = [
       "This engineered door made from seasoned wood comes with a 10-year warranty, making it the ideal blend of durability and design for your main door.",
     image: <WindowShuttersImage1 />,
     src: "http://windazo.like-themes.com/wp-content/uploads/2019/05/slide_03_01.png",
+    backgroundImage: "http://windazo.like-themes.com/wp-content/uploads/2019/05/slide_03_01.png",
   },
   {
     id: 2,
@@ -23,6 +24,7 @@ const carouselItems = [
       "Upgrade security with this digital door lock: offering fingerprint, face recognition, app, card, key, and password access for ultimate convenience and protection.",
     image: <WindowShuttersImage1 />,
     src: "http://windazo.like-themes.com/wp-content/uploads/2019/05/slide_01_01-1.png",
+    backgroundImage: "http://windazo.like-themes.com/wp-content/uploads/2019/05/slide_01_01-1.png",
   },
   {
     id: 3,
@@ -32,6 +34,7 @@ const carouselItems = [
       "Our Sagwan door frame is water resistant, chemically treated, and backed by a 10-year warranty — offering unmatched durability, elegance, and long-lasting protection for your home.",
     image: <WindowShuttersImage1 />,
     src: "http://windazo.like-themes.com/wp-content/uploads/2019/05/slide_02_01.png",
+    backgroundImage: "http://windazo.like-themes.com/wp-content/uploads/2019/05/slide_02_01.png",
   },
 ];
 
@@ -48,124 +51,151 @@ export default function HeroCarousel() {
   }, []);
 
   return (
-    <div className="relative overflow-hidden bg-cream-50">
-      <div className="container mx-auto px-4 md:px-6 py-12 md:py-18">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <div className="hero-carousel-wrapper relative overflow-hidden min-h-[550px] sm:min-h-[600px] md:min-h-[600px] lg:min-h-[700px]">
+      {/* Background Images for each slide */}
+      {carouselItems.map((item, index) => (
+        <div
+          key={`bg-${item.id}`}
+          className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+            index === currentSlide
+              ? "opacity-100 scale-100"
+              : "opacity-0 scale-110"
+          }`}
+          style={{
+            backgroundImage: `url(${item.backgroundImage || item.src})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          {/* Overlay for better text readability - stronger on mobile */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#2a1c16]/90 via-[#2a1c16]/80 to-[#2a1c16]/70 md:from-[#2a1c16]/85 md:via-[#2a1c16]/75 md:to-[#2a1c16]/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#2a1c16]/60 via-transparent to-[#2a1c16]/60 md:from-transparent md:via-transparent md:to-[#2a1c16]/50"></div>
+        </div>
+      ))}
+
+      <div className="container mx-auto px-4 sm:px-5 md:px-6 lg:px-8 py-6 sm:py-8 md:py-12 lg:py-16 relative z-10 mt-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-12 items-center min-h-[450px] sm:min-h-[500px] md:min-h-[500px] lg:min-h-[600px]">
           {/* Text Content */}
-          <div className="z-10">
+          <div className="relative z-10 text-center lg:text-left">
             {carouselItems.map((item, index) => (
               <div
                 key={item.id}
-                className={`transition-all duration-700 ${
+                className={`transition-all duration-700 ease-in-out ${
                   index === currentSlide
                     ? "opacity-100 transform translate-y-0"
-                    : "opacity-0 transform translate-y-8 absolute"
+                    : "opacity-0 transform translate-y-8 absolute top-0 left-0 right-0"
                 }`}
-                style={{ display: index === currentSlide ? "block" : "none" }}
               >
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 animate-fade-in-up">
-                  {/* {item.title.split("").map((char, i) => (
-                    <span
-                      key={i}
-                      className="inline-block animate-fade-in-up"
-                      style={{ animationDelay: `${i * 0.05}s` }}
-                    >
-                      {char}
-                    </span>
-                  ))} */}
-
-                  {item.title}
-                </h1>
-                <h2
-                  className="text-4xl md:text-5xl font-bold text-gold mb-6 animate-fade-in-up"
-                  style={{ animationDelay: "0.3s" }}
-                >
-                  {item.subtitle}
-                </h2>
-                <p
-                  className="text-gray-600 mb-8 max-w-md animate-fade-in-up"
-                  style={{ animationDelay: "0.5s" }}
-                >
-                  {item.description}
-                </p>
                 <div
-                  className="flex space-x-4 animate-fade-in-up"
-                  style={{ animationDelay: "0.7s" }}
+                  className={`transition-all duration-700 delay-100 ${
+                    index === currentSlide
+                      ? "opacity-100 transform translate-x-0"
+                      : "opacity-0 transform -translate-x-8"
+                  }`}
                 >
-                  <a href="/contacts" className="flex items-center bg-brown-900 hover:bg-gray-900 text-white px-6 py-3 rounded-none transition-transform duration-300 hover:translate-y-[-4px] home-btn">
-                    MAKE ORDER
-                    <MoveRight className="ml-2 h-4 w-6" />
-                  </a>
-                  <a href="/contacts"
-                    className="flex items-center bg-gold hover:bg-gold-dark text-white border-gold hover:border-gold px-6 py-3 rounded-none transition-transform duration-300 hover:translate-y-[-4px] home-btn"
-                  >
-                    READ MORE <MoveRight className="ml-2 h-4 w-6" />
-                  </a>
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-3 leading-tight">
+                    {item.title}
+                  </h1>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gold mb-3 sm:mb-4 md:mb-6 leading-tight">
+                    {item.subtitle}
+                  </h2>
+                  <p className="text-gray-200 text-xs sm:text-sm md:text-base lg:text-lg mb-5 sm:mb-6 md:mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                    {item.description}
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 md:gap-4 justify-center lg:justify-start">
+                    <a
+                      href="/contacts"
+                      className="inline-flex items-center justify-center bg-brown-900 hover:bg-gray-900 active:bg-gray-800 text-white px-5 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-none transition-all duration-300 active:scale-95 hover:translate-y-[-2px] sm:hover:translate-y-[-4px] hover:shadow-lg text-xs sm:text-sm md:text-base font-semibold min-h-[42px] sm:min-h-[44px]"
+                    >
+                      MAKE ORDER
+                      <MoveRight className="ml-1.5 sm:ml-2 h-3.5 w-3.5 sm:h-4 sm:w-5" />
+                    </a>
+                    <a
+                      href="/contacts"
+                      className="inline-flex items-center justify-center bg-gold hover:bg-yellow-600 active:bg-yellow-700 text-white px-5 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-none transition-all duration-300 active:scale-95 hover:translate-y-[-2px] sm:hover:translate-y-[-4px] hover:shadow-lg text-xs sm:text-sm md:text-base font-semibold min-h-[42px] sm:min-h-[44px]"
+                    >
+                      READ MORE
+                      <MoveRight className="ml-1.5 sm:ml-2 h-3.5 w-3.5 sm:h-4 sm:w-5" />
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Image */}
-          <div className="relative h-[400px] md:h-[500px] flex justify-center">
+          <div className="relative h-[240px] sm:h-[300px] md:h-[380px] lg:h-[500px] xl:h-[600px] flex justify-center items-center order-first lg:order-last">
             {carouselItems.map((item, index) => (
               <div
                 key={item.id || index}
-                className={`absolute inset-0 transition-all duration-700 ${
+                className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ease-in-out ${
                   index === currentSlide
-                    ? "opacity-100 transform scale-100"
-                    : "opacity-0 transform scale-95"
+                    ? "opacity-100 transform scale-100 translate-x-0"
+                    : "opacity-0 transform scale-95 translate-x-8"
                 }`}
-                style={{ display: index === currentSlide ? "block" : "none" }}
               >
-                <Image
-                  className="ltx-floating-image"
-                  alt="bg"
-                  src={item?.src}
-                  style={{ height: "450px" }}
-                  width={600}
-                  height={450}
-                />
+                <div className="relative w-full h-full max-w-full max-h-full flex items-center justify-center px-2 sm:px-4">
+                  <Image
+                    className="slider-product-image object-contain w-auto h-auto max-w-[85%] sm:max-w-[90%] md:max-w-full max-h-full drop-shadow-2xl"
+                    alt={item.title}
+                    src={item?.src}
+                    width={600}
+                    height={600}
+                    style={{ maxWidth: "100%", height: "auto", maxHeight: "100%" }}
+                  />
+                </div>
               </div>
             ))}
-
-            {/* <div
-              data-depth="0.15"
-              className="ltx-layer ltx-layer-2 ltx-floating-image im2"
-              style={{
-                transform: "translate3d(-6.9px, -8.6px, 0px)",
-                transformStyle: "preserve-3d",
-                backfaceVisibility: "hidden",
-                position: "relative",
-                display: "block",
-                left: "0px",
-                top: "0px",
-              }}
-
-             
-            >
-              <img
-                className="ltx-floating-image"
-                alt="bg"
-                src="http://windazo.like-themes.com/wp-content/uploads/2019/05/slide_03_01.png"
-              />
-            </div> */}
           </div>
         </div>
 
         {/* Carousel Indicators */}
-        <div className="flex justify-center mt-8 space-x-2">
+        <div className="flex justify-center mt-4 sm:mt-6 md:mt-8 space-x-2 relative z-10">
           {carouselItems.map((_, index) => (
             <button
               key={index}
               type="button"
               onClick={() => setCurrentSlide(index)}
-              className={`h-2 w-2 rounded-full transition-colors ${
-                index === currentSlide ? "bg-gold" : "bg-gray-300"
+              className={`h-2 w-2 sm:h-2.5 sm:w-2.5 md:h-3 md:w-3 rounded-full transition-all duration-300 touch-manipulation ${
+                index === currentSlide
+                  ? "bg-gold w-7 sm:w-8 md:w-10 scale-110"
+                  : "bg-white/50 active:bg-white/75"
               }`}
               aria-label={`Go to slide ${index + 1}`}
+              style={{ minWidth: "8px", minHeight: "8px" }}
             />
           ))}
+        </div>
+
+        {/* Navigation Arrows - Hidden on mobile, shown on tablet+ */}
+        <div className="absolute inset-y-0 left-0 flex items-center z-20 pointer-events-none hidden md:flex">
+          <button
+            onClick={() =>
+              setCurrentSlide(
+                currentSlide === 0 ? carouselItems.length - 1 : currentSlide - 1
+              )
+            }
+            className="pointer-events-auto ml-2 md:ml-4 p-2 md:p-3 bg-white/25 active:bg-white/40 backdrop-blur-sm rounded-full text-white transition-all duration-300 active:scale-95 hover:scale-110 shadow-lg touch-manipulation"
+            aria-label="Previous slide"
+            style={{ minWidth: "40px", minHeight: "40px" }}
+          >
+            <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
+          </button>
+        </div>
+        <div className="absolute inset-y-0 right-0 flex items-center z-20 pointer-events-none hidden md:flex">
+          <button
+            onClick={() =>
+              setCurrentSlide(
+                currentSlide === carouselItems.length - 1 ? 0 : currentSlide + 1
+              )
+            }
+            className="pointer-events-auto mr-2 md:mr-4 p-2 md:p-3 bg-white/25 active:bg-white/40 backdrop-blur-sm rounded-full text-white transition-all duration-300 active:scale-95 hover:scale-110 shadow-lg touch-manipulation"
+            aria-label="Next slide"
+            style={{ minWidth: "40px", minHeight: "40px" }}
+          >
+            <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
+          </button>
         </div>
       </div>
     </div>
