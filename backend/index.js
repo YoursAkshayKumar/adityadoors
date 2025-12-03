@@ -73,4 +73,14 @@ app.use((req, res, next) => {
   next();
 });
 
-app.listen(PORT, () => console.log(`server running on port ${PORT}`));
+// Export for Vercel serverless functions
+// Vercel will use this as the serverless function handler
+module.exports = app;
+
+// Only listen when running locally (not in Vercel serverless environment)
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  });
+}
