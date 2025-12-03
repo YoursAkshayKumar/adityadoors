@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { useScrollAnimation } from "../hooks/use-scroll-animation";
 import { Search, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import BlogCard from "./blog-card";
 import FeaturedPost from "./featured-post";
 import { useGetAllBlogsQuery } from "@/redux/features/blog/blogApi";
@@ -10,6 +11,7 @@ import { useGetAllBlogsQuery } from "@/redux/features/blog/blogApi";
 type BlogApiItem = {
   _id: string;
   title: string;
+  slug?: string;
   excerpt?: string;
   content: string;
   image?: string;
@@ -22,6 +24,8 @@ type BlogApiItem = {
 
 const toUiPost = (b: BlogApiItem, idx: number) => ({
   id: idx + 1,
+  _id: b._id,
+  slug: b.slug || b._id,
   title: b.title,
   excerpt: b.excerpt || "",
   author: b.author || "Admin",
@@ -287,19 +291,30 @@ export default function BlogContent() {
                 </h3>
                 <div className="space-y-4">
                   {(!isLoading && !isError ? uiPosts.slice(0, 3) : []).map((post) => (
-                    <div key={post.id} className="flex space-x-3">
-                      <div className="w-16 h-16 bg-gray-200 rounded-lg flex-shrink-0 flex items-center justify-center">
-                        <span className="text-xs text-gray-500">IMG</span>
-                      </div>
+                    <Link key={post.id} href={`/blog/${post._id || post.id}`} className="flex space-x-3 hover:bg-gray-50 p-2 rounded-lg transition-colors duration-300">
+                      {post.image ? (
+                        <div className="w-16 h-16 rounded-lg flex-shrink-0 overflow-hidden bg-gray-200">
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            className="w-full h-full object-cover"
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-16 h-16 bg-gray-200 rounded-lg flex-shrink-0 flex items-center justify-center">
+                          <span className="text-xs text-gray-500">IMG</span>
+                        </div>
+                      )}
                       <div className="flex-1">
                         <h4 className="text-sm font-semibold text-gray-900 line-clamp-2 hover:text-gold transition-colors duration-300 cursor-pointer">
                           {post.title}
                         </h4>
                         <p className="text-xs text-gray-500 mt-1">
-                          {post.date}
+                          {new Date(post.date).toLocaleDateString()}
                         </p>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>

@@ -71,6 +71,11 @@ const sidebar_menu: Array<ISidebarMenus> = [
     icon: Reviews,
     link: "/inquiries-list",
     title: "Inquiries",
+    subMenus: [
+      { title: "Inquiries List", link: "/inquiries-list" },
+      { title: "Measurement Inquiries", link: "/measurements-list" },
+      { title: "Contact Inquiries", link: "/contacts-list" }
+    ],
   },
   {
     id: 8,

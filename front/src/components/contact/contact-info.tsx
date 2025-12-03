@@ -7,26 +7,26 @@ const contactDetails = [
   {
     icon: <Phone className="h-6 w-6" />,
     title: "Phone",
-    details: ["0 (800) 255-52-38", "0 (800) 255-52-39"],
-    subtitle: "24/7 - FREE - CALL",
+    details: ["+91-9997297123"],
+    subtitle: "Call us anytime",
   },
   {
     icon: <Mail className="h-6 w-6" />,
     title: "Email",
-    details: ["info@windazo.com", "sales@windazo.com"],
+    details: ["info@adityadoors.in"],
     subtitle: "We reply within 24 hours",
   },
   {
     icon: <MapPin className="h-6 w-6" />,
     title: "Address",
-    details: ["123 Window Street, Meerut", "Uttar Pradesh, India - 250001"],
+    details: ["Binoli Road Near Trends Showroom, Sardhana, 250342 Meerut, Uttar Pradesh"],
     subtitle: "Visit our showroom",
   },
   {
     icon: <Clock className="h-6 w-6" />,
     title: "Working Hours",
-    details: ["Mon - Fri: 8:00 - 18:00", "Sat: 9:00 - 16:00"],
-    subtitle: "Sunday: Closed",
+    details: ["Mon - Fri: 8:00AM - 7:00PM", "Sat - Sun: 9:00AM - 8:00PM"],
+    subtitle: "We're here to help",
   },
 ];
 

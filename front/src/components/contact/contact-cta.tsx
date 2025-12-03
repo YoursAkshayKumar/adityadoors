@@ -23,11 +23,11 @@ export default function ContactCTA() {
             }`}
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              Ready to Get <span className="text-gold">Started?</span>
+              READY TO GET <span className="text-gold">STARTED</span>
             </h2>
             <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
               Do not wait any longer. Contact us today for a free consultation
-              and transform your space with our premium window solutions.
+              and transform your space with our premium Home Furnishing solutions.
             </p>
           </div>
 

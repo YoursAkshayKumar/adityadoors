@@ -6,29 +6,81 @@ import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { useScrollAnimation } from "./hooks/use-scroll-animation";
 import { Image } from "antd";
+import { useAddMeasurementMutation } from "@/redux/measurement/measurementApi";
+import { notifySuccess, notifyError } from "@/utils/toast.js";
 
 // import AppointmentBackground from "./appointment-background"
 
 export default function AppointmentSection() {
   const [sectionRef, isVisible] = useScrollAnimation();
+  const [addMeasurement, { isLoading: isSubmitting }] = useAddMeasurementMutation();
   const [formData, setFormData] = useState({
     name: "",
+    email: "",
     phone: "",
+    address: "",
+    preferredDate: "",
+    preferredTime: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    // Form submitted
-    // Reset form
-    setFormData({ name: "", phone: "" });
-    // Show success message or redirect
-    alert("Thank you! Our manager will contact you shortly.");
+    
+    // Validate required fields
+    if (!formData.name.trim()) {
+      notifyError("Please enter your name");
+      return;
+    }
+    if (!formData.email.trim()) {
+      notifyError("Please enter your email");
+      return;
+    }
+    if (!formData.phone.trim()) {
+      notifyError("Please enter your phone number");
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      notifyError("Please enter a valid email address");
+      return;
+    }
+
+    try {
+      const measurementData = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        address: formData.address.trim(),
+        preferredDate: formData.preferredDate || null,
+        preferredTime: formData.preferredTime.trim(),
+      };
+
+      const result = await addMeasurement(measurementData).unwrap();
+      
+      notifySuccess("Thank you! Your measurement request has been submitted. Our team will contact you shortly.");
+      
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+        preferredDate: "",
+        preferredTime: "",
+      });
+    } catch (error: any) {
+      const errorMessage = error?.data?.message || error?.message || "Failed to submit measurement request. Please try again.";
+      notifyError(errorMessage);
+    }
   };
 
   return (
@@ -63,17 +115,30 @@ export default function AppointmentSection() {
                 Schedule Your Free Measurement
               </p>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Your name*"
-                    required
-                    className="w-full p-3 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold"
-                  />
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Your name*"
+                      required
+                      className="w-full p-3 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Your email*"
+                      required
+                      className="w-full p-3 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500"
+                    />
+                  </div>
                 </div>
                 <div>
                   <input
@@ -83,14 +148,48 @@ export default function AppointmentSection() {
                     onChange={handleChange}
                     placeholder="Your phone*"
                     required
-                    className="w-full p-3 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold"
+                    className="w-full p-3 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500"
                   />
                 </div>
+                <div>
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    placeholder="Address (optional)"
+                    className="w-full p-3 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <input
+                      type="date"
+                      name="preferredDate"
+                      value={formData.preferredDate}
+                      onChange={handleChange}
+                      placeholder="Preferred Date"
+                      className="w-full p-3 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500 text-gray-900"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="time"
+                      name="preferredTime"
+                      value={formData.preferredTime}
+                      onChange={handleChange}
+                      placeholder="Preferred Time"
+                      className="w-full p-3 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold placeholder:text-gray-500 text-gray-900"
+                    />
+                  </div>
+                </div>
+
                 <button
-                  //   type="submit"
-                  className="w-full bg-gold hover:bg-gold-dark text-white px-6 py-3 rounded-none transition-all duration-300 flex items-center justify-center"
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-gold hover:bg-gold-dark text-white px-6 py-3 rounded-none transition-all duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  SEND REQUEST <ArrowRight className="ml-2 h-4 w-4" />
+                  {isSubmitting ? "SUBMITTING..." : "SEND REQUEST"} <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </form>
             </div>

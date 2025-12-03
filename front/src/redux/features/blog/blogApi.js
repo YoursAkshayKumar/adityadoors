@@ -12,7 +12,11 @@ export const blogApi = apiSlice.injectEndpoints({
       query: (id) => `api/blog/get/${id}`,
       providesTags: (result, error, arg) => [{ type: "Blog", id: arg }],
     }),
+    getBlogBySlug: builder.query({
+      query: (slug) => `api/blog/slug/${encodeURIComponent(slug)}`,
+      providesTags: (result, error, arg) => [{ type: "Blog", id: arg }],
+    }),
   }),
 });
 
-export const { useGetAllBlogsQuery, useGetBlogQuery } = blogApi;
+export const { useGetAllBlogsQuery, useGetBlogQuery, useGetBlogBySlugQuery } = blogApi;

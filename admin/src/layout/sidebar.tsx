@@ -59,7 +59,6 @@ export default function Sidebar({sideMenu,setSideMenu}:IProps) {
                     {!menu.subMenus && menu.title !== 'Online store' && (
                       <Link
                         href={menu.link}
-                        onClick={() => handleMenuActive(menu.title)}
                         className={`group rounded-md relative text-black text-lg font-medium inline-flex items-center w-full transition-colors ease-in-out duration-300 px-5 py-[9px] mb-2 hover:bg-gray sidebar-link-active`}
                       >
                         <span className="inline-block mr-[10px] text-xl">
@@ -93,8 +92,9 @@ export default function Sidebar({sideMenu,setSideMenu}:IProps) {
                     )}
                     {menu.title === 'Online store' && (
                       <a
-                        href="https://hamart-shop.vercel.app"
+                        href="https://adityadoors.in/"
                         target="_blank"
+                        rel="noopener noreferrer"
                         className={`group cursor-pointer rounded-md relative text-black text-lg font-medium inline-flex items-center w-full transition-colors ease-in-out duration-300 px-5 py-[9px] mb-2 hover:bg-gray sidebar-link-active`}
                       >
                         <span className="inline-block mr-[10px] text-xl">
@@ -134,9 +134,8 @@ export default function Sidebar({sideMenu,setSideMenu}:IProps) {
       <div
         onClick={() => setSideMenu(!sideMenu)}
         className={`fixed top-0 left-0 w-full h-full z-40 bg-black/70 transition-all duration-300 ${sideMenu ? "visible opacity-1" : "  invisible opacity-0 "}`}
-      >
-        {" "}
-      </div>
+        aria-hidden="true"
+      />
     </>
   );
 }

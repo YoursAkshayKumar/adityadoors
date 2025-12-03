@@ -6,10 +6,12 @@ import { useState } from "react";
 import { useScrollAnimation } from "../hooks/use-scroll-animation";
 // import { Button } from "@/components/ui/button"
 import { Send, User, Mail, Phone, MessageSquare } from "lucide-react";
-import { Button } from "antd";
+import { useAddContactMutation } from "@/redux/contact/contactApi";
+import { notifySuccess, notifyError } from "@/utils/toast.js";
 
 export default function ContactForm() {
   const [sectionRef, isVisible] = useScrollAnimation();
+  const [addContact, { isLoading: isSubmitting }] = useAddContactMutation();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,18 +29,59 @@ export default function ContactForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submitted
-    // Handle form submission here
-    alert("Thank you for your message! We'll get back to you soon.");
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: "",
-    });
+    
+    // Validate required fields
+    if (!formData.name.trim()) {
+      notifyError("Please enter your name");
+      return;
+    }
+    if (!formData.email.trim()) {
+      notifyError("Please enter your email");
+      return;
+    }
+    if (!formData.subject.trim()) {
+      notifyError("Please select a subject");
+      return;
+    }
+    if (!formData.message.trim()) {
+      notifyError("Please enter your message");
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      notifyError("Please enter a valid email address");
+      return;
+    }
+
+    try {
+      const contactData = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+      };
+
+      const result = await addContact(contactData).unwrap();
+      
+      notifySuccess("Thank you for your message! We'll get back to you soon.");
+      
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error: any) {
+      const errorMessage = error?.data?.message || error?.message || "Failed to send message. Please try again.";
+      notifyError(errorMessage);
+    }
   };
 
   return (
@@ -58,11 +101,10 @@ export default function ContactForm() {
               </span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Get a <span className="text-gold">Free Quote</span>
+              GET A <span className="text-gold">FREE QUOTE</span>
             </h2>
             <p className="text-gray-600">
-              Fill out the form below and we will get back to you with a
-              personalized quote for your window needs.
+              Fill out the form below to connect with our team.
             </p>
           </div>
 
@@ -77,7 +119,7 @@ export default function ContactForm() {
                   onChange={handleChange}
                   placeholder="Your Name *"
                   required
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all duration-300 placeholder:text-gray-500"
                 />
               </div>
 
@@ -90,7 +132,7 @@ export default function ContactForm() {
                   onChange={handleChange}
                   placeholder="Your Email *"
                   required
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all duration-300 placeholder:text-gray-500"
                 />
               </div>
             </div>
@@ -104,7 +146,7 @@ export default function ContactForm() {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="Your Phone"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all duration-300"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all duration-300 placeholder:text-gray-500"
                 />
               </div>
 
@@ -114,7 +156,7 @@ export default function ContactForm() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all duration-300 text-gray-900"
                 >
                   <option value="">Select Subject *</option>
                   <option value="quote">Request Quote</option>
@@ -135,18 +177,18 @@ export default function ContactForm() {
                 placeholder="Your Message *"
                 required
                 rows={6}
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all duration-300 resize-none"
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all duration-300 resize-none placeholder:text-gray-500"
               />
             </div>
 
-            <Button
-              typeof="submit"
-              //   type="submit"
-              className="w-full bg-gold hover:bg-gold-dark text-white px-6 py-4 rounded-none transition-all duration-300 flex items-center justify-center text-lg"
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-gold hover:bg-gold-dark text-white px-6 py-4 rounded-none transition-all duration-300 flex items-center justify-center text-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Send className="mr-2 h-5 w-5" />
-              Send Message
-            </Button>
+              {isSubmitting ? "Sending..." : "Send Message"}
+            </button>
           </form>
         </div>
       </div>

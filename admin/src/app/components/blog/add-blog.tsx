@@ -3,14 +3,16 @@ import React from "react";
 import GlobalImgUpload from "../category/global-img-upload";
 import FormFieldTwo from "../brand/form-field-two";
 import Tags from "../products/add-product/tags";
- 
+import RichTextEditor from "./rich-text-editor";
 import useBlogSubmit from "@/hooks/useBlogSubmit";
+import ErrorMsg from "../common/error-msg";
 
 const AddBlog = () => {
   const {
     register,
     handleSubmit,
     errors,
+    control,
     image,
     setImage,
     isSubmitted,
@@ -53,12 +55,15 @@ const AddBlog = () => {
           </div>
 
           <div className="bg-white px-8 py-8 rounded-md mb-6">
-            <p className="mb-0 text-base text-black">Content</p>
-            <textarea
-              {...register("content", { required: true })}
+            <p className="mb-0 text-base text-black mb-4">
+              Content <span className="text-red">*</span>
+            </p>
+            <RichTextEditor
+              control={control}
               name="content"
-              className="input w-full h-[300px] rounded-md border border-gray6 px-6 text-base text-black"
+              errors={errors}
               placeholder="Write your blog content"
+              required={true}
             />
           </div>
 
@@ -73,11 +78,12 @@ const AddBlog = () => {
             <div className="mb-5">
               <p className="mb-0 text-base text-black">Meta Description</p>
               <textarea
-                {...register("metadescription", { required: true })}
+                {...register("metadescription", { required: "Meta description is required!" })}
                 name="metadescription"
                 className="input w-full h-[140px] rounded-md border border-gray6 px-6 text-base text-black"
                 placeholder="Short description for SEO"
               />
+              <ErrorMsg msg={(errors?.metadescription?.message as string) || ""} />
             </div>
             <div className="mb-5">
               <p className="mb-0 text-base text-black">Meta Keywords</p>

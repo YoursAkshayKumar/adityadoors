@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useScrollAnimation } from "../hooks/use-scroll-animation";
 import { Award, Home } from "lucide-react";
 
@@ -62,15 +63,25 @@ export default function AboutStory() {
                 : "opacity-0 transform translate-x-12"
             }`}
           >
-            <div className="relative h-96 bg-gray-200 rounded-lg overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-gray-500">
-                  <Home className="h-16 w-16 mx-auto mb-4" />
-                  <p>Company Workshop & Showroom</p>
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
+              <Image
+                src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&h=600&fit=crop&q=80"
+                alt="Aditya Doors Workshop & Showroom - Premium Wood Craftsmanship"
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              <div className="absolute bottom-4 left-4 right-4">
+                <div className="bg-white/90 backdrop-blur-sm px-4 py-3 rounded-lg">
+                  <p className="text-gray-900 font-semibold text-center">
+                    Company Workshop & Showroom
+                  </p>
                 </div>
               </div>
             </div>
-            <div className="absolute -bottom-6 -right-6 bg-gold p-6 rounded-lg">
+            <div className="absolute -bottom-6 -right-6 bg-gold p-6 rounded-lg shadow-xl z-10">
               <Award className="h-12 w-12 text-white" />
             </div>
           </div>

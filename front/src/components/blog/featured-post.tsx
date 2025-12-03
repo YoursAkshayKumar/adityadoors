@@ -1,11 +1,14 @@
 "use client";
 
-import { Button } from "antd";
-import { Calendar, User, Clock, ArrowRight } from "lucide-react";
+import { Button, Image } from "antd";
+import { Calendar, Clock, ArrowRight } from "lucide-react";
+import Link from "next/link";
 // import { Button } from "@/components/ui/button"
 
 interface BlogPost {
   id: number;
+  _id?: string;
+  slug?: string;
   title: string;
   excerpt: string;
   author: string;
@@ -29,28 +32,43 @@ export default function FeaturedPost({
   isVisible,
 }: FeaturedPostProps) {
   return (
-    <article
-      className={`bg-white rounded-lg shadow-lg overflow-hidden group transition-all duration-700 hover:shadow-xl ${
-        isVisible
-          ? "opacity-100 transform translate-y-0"
-          : "opacity-0 transform translate-y-12"
-      }`}
-      style={{ transitionDelay: `${index * 200}ms` }}
-    >
+    <Link href={`/blog/${post.slug || post._id || post.id}`}>
+      <article
+        className={`bg-white rounded-lg shadow-lg overflow-hidden group transition-all duration-700 hover:shadow-xl cursor-pointer ${
+          isVisible
+            ? "opacity-100 transform translate-y-0"
+            : "opacity-0 transform translate-y-12"
+        }`}
+        style={{ transitionDelay: `${index * 200}ms` }}
+      >
       {/* Featured Image */}
-      <div className="relative h-64 overflow-hidden">
-        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-          <div className="text-gray-400 text-center">
-            <div className="w-20 h-20 bg-gray-300 rounded-lg mx-auto mb-2"></div>
-            <p className="text-sm">Featured Image</p>
+      <div className="relative h-64 overflow-hidden bg-gray-200">
+        {post.image ? (
+          <img
+            src={post.image}
+            alt={post.title}
+            className="w-full h-full object-cover"
+            style={{ 
+              width: "100%", 
+              height: "100%", 
+              objectFit: "cover",
+              display: "block"
+            }}
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+            <div className="text-gray-400 text-center">
+              <div className="w-20 h-20 bg-gray-300 rounded-lg mx-auto mb-2"></div>
+              <p className="text-sm">Featured Image</p>
+            </div>
           </div>
-        </div>
-        <div className="absolute top-4 left-4">
+        )}
+        <div className="absolute top-4 left-4 z-10">
           <span className="bg-gold text-white px-3 py-1 text-xs font-bold rounded-full">
             FEATURED
           </span>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
       </div>
 
       {/* Content */}
@@ -59,10 +77,6 @@ export default function FeaturedPost({
           <span className="inline-flex items-center">
             <Calendar className="h-4 w-4 mr-1" />
             {new Date(post.date).toLocaleDateString()}
-          </span>
-          <span className="inline-flex items-center">
-            <User className="h-4 w-4 mr-1" />
-            {post.author}
           </span>
           <span className="inline-flex items-center">
             <Clock className="h-4 w-4 mr-1" />
@@ -93,11 +107,14 @@ export default function FeaturedPost({
               </span>
             ))}
           </div>
-          <Button className="bg-gold hover:bg-gold-dark text-white px-4 py-2 rounded-lg transition-all duration-300 text-sm">
-            Read More <ArrowRight className="ml-1 h-3 w-3" />
-          </Button>
+          <Link href={`/blog/${post.slug || post._id || post.id}`}>
+            <Button className="bg-gold hover:bg-gold-dark text-white px-4 py-2 rounded-lg transition-all duration-300 text-sm">
+              Read More <ArrowRight className="ml-1 h-3 w-3" />
+            </Button>
+          </Link>
         </div>
       </div>
     </article>
+    </Link>
   );
 }

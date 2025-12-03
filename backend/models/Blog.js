@@ -9,9 +9,10 @@ const blogSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
       trim: true,
+      sparse: true, // Allows multiple null values
     },
     image: {
       type: String,

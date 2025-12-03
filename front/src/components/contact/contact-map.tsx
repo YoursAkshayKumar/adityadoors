@@ -23,15 +23,18 @@ export default function ContactMap() {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Visit Our <span className="text-gold">Showroom</span>
             </h2>
-            <p className="text-gray-600">
+            <p className="text-gray-600 mb-4">
               Come see our window displays and speak with our experts in person.
+            </p>
+            <p className="text-[#FF00FF] font-bold uppercase text-lg">
+              LOCATION OF THE SHOWROOM TO BE UPDATED
             </p>
           </div>
 
           {/* Map - Replace the placeholder with actual Google Maps embed */}
           <div className="relative h-80 bg-gray-300 rounded-lg overflow-hidden mb-8">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224346.48129763943!2d77.64115167343749!3d28.984463599999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390c64f457e9c5c5%3A0x2e6d9c0b1b9c5c5c!2sMeerut%2C%20Uttar%20Pradesh%2C%20India!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
+              src="https://maps.google.com/maps?width=600&height=400&hl=en&q=Aditya%20Doors%2C%20Binoli%20Road%2C%20near%20Canara%20Bank%2C%20Sardhana%2C%20Uttar%20Pradesh%20250342&t=&z=14&ie=UTF8&iwloc=B&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -51,8 +54,7 @@ export default function ContactMap() {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-1">Address</h3>
-                  <p className="text-gray-600">123 Window Street, Meerut</p>
-                  <p className="text-gray-600">Uttar Pradesh, India - 250001</p>
+                  <p className="text-gray-600">Binoli Road Near Trends Showroom, Sardhana, 250342 Meerut, Uttar Pradesh</p>
                 </div>
               </div>
 
@@ -64,16 +66,15 @@ export default function ContactMap() {
                   <h3 className="font-bold text-gray-900 mb-1">
                     Showroom Hours
                   </h3>
-                  <p className="text-gray-600">Mon - Fri: 8:00 - 18:00</p>
-                  <p className="text-gray-600">Sat: 9:00 - 16:00</p>
-                  <p className="text-gray-600">Sun: Closed</p>
+                  <p className="text-gray-600">Mon-Fri: 8:00AM-7:00PM</p>
+                  <p className="text-gray-600">Sat: 9:00AM-8:00PM</p>
                 </div>
               </div>
             </div>
 
             <div className="mt-6 pt-6 border-t border-gray-200">
               <a
-                href="https://maps.google.com/?q=Meerut,Uttar+Pradesh,India"
+                href="hhttps://www.google.com/maps/search/Binoli+Road+Near+Trends+Showroom,+Sardhana,+250342+Meerut,+Uttar+Pradesh/@29.1435966,77.6056234,17.4z?entry=ttu&g_ep=EgoyMDI1MTIwMS4wIKXMDSoASAFQAw%3D%3D"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-gold hover:text-gold-dark transition-colors duration-300"

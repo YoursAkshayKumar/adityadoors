@@ -54,8 +54,7 @@ export default function ContactHero() {
                 : "opacity-0 transform translate-y-12"
             }`}
           >
-            Ready to transform your space with premium window solutions? We are
-            here to help you every step of the way.
+            Fill out the form below to connect with our team.
           </p>
         </div>
       </div>

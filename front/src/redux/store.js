@@ -14,6 +14,10 @@ import './portfolio/portfolioApi';
 import './inquiry/inquiryApi';
 // Import FAQ API to register endpoints
 import './faq/faqApi';
+// Import measurement API to register endpoints
+import './measurement/measurementApi';
+// Import contact API to register endpoints
+import './contact/contactApi';
 
 
 export const store = configureStore({

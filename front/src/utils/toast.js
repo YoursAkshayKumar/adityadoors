@@ -1,14 +1,30 @@
-// Simple toast notifications
+import { toast } from 'react-toastify';
+
+// Toast notifications with auto-dismiss
 export const notifyError = (message) => {
   if (typeof window !== 'undefined') {
-    alert(`Error: ${message}`);
-    // Or use a toast library like react-toastify, sonner, etc.
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   }
 };
 
 export const notifySuccess = (message) => {
   if (typeof window !== 'undefined') {
-    alert(`Success: ${message}`);
-    // Or use a toast library
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   }
 };
