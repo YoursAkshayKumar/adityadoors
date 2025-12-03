@@ -85,7 +85,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-white">
+    <section ref={sectionRef} id="contact-form" className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4 md:px-6 max-w-2xl">
         <div
           className={`transition-all duration-1000 ${

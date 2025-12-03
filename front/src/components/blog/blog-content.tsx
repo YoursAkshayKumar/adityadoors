@@ -203,7 +203,7 @@ export default function BlogContent() {
               )}
               {!isLoading && !isError && filteredPosts.map((post, index) => (
                 <BlogCard
-                  key={post.id}
+                  key={post._id || post.id}
                   post={post}
                   index={index}
                   isVisible={isVisible}
@@ -291,7 +291,7 @@ export default function BlogContent() {
                 </h3>
                 <div className="space-y-4">
                   {(!isLoading && !isError ? uiPosts.slice(0, 3) : []).map((post) => (
-                    <Link key={post.id} href={`/blog/${post._id || post.id}`} className="flex space-x-3 hover:bg-gray-50 p-2 rounded-lg transition-colors duration-300">
+                    <Link key={post._id || post.id} href={`/blog/${post._id || post.id}`} className="flex space-x-3 hover:bg-gray-50 p-2 rounded-lg transition-colors duration-300">
                       {post.image ? (
                         <div className="w-16 h-16 rounded-lg flex-shrink-0 overflow-hidden bg-gray-200">
                           <img
@@ -311,7 +311,14 @@ export default function BlogContent() {
                           {post.title}
                         </h4>
                         <p className="text-xs text-gray-500 mt-1">
-                          {new Date(post.date).toLocaleDateString()}
+                          {post.date ? (() => {
+                            try {
+                              const date = new Date(post.date);
+                              return !isNaN(date.getTime()) ? date.toLocaleDateString() : 'Invalid date';
+                            } catch {
+                              return 'Invalid date';
+                            }
+                          })() : 'No date'}
                         </p>
                       </div>
                     </Link>

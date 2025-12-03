@@ -76,7 +76,14 @@ export default function FeaturedPost({
         <div className="flex items-center space-x-4 text-sm text-gray-500 mb-3">
           <span className="inline-flex items-center">
             <Calendar className="h-4 w-4 mr-1" />
-            {new Date(post.date).toLocaleDateString()}
+            {post.date ? (() => {
+              try {
+                const date = new Date(post.date);
+                return !isNaN(date.getTime()) ? date.toLocaleDateString() : 'Invalid date';
+              } catch {
+                return 'Invalid date';
+              }
+            })() : 'No date'}
           </span>
           <span className="inline-flex items-center">
             <Clock className="h-4 w-4 mr-1" />

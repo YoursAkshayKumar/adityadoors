@@ -7,7 +7,7 @@ export default function ContactMap() {
   const [sectionRef, isVisible] = useScrollAnimation();
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-gray-100">
+    <section ref={sectionRef} id="contact-map" className="py-16 md:py-24 bg-gray-100">
       <div className="container mx-auto px-4 md:px-6 max-w-2xl">
         <div
           className={`transition-all duration-1000 ${
