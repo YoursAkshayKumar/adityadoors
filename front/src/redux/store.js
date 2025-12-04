@@ -18,6 +18,8 @@ import './faq/faqApi';
 import './measurement/measurementApi';
 // Import contact API to register endpoints
 import './contact/contactApi';
+// Import carousel API to register endpoints
+import './carousel/carouselApi';
 
 
 export const store = configureStore({

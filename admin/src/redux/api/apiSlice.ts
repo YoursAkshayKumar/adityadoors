@@ -53,5 +53,7 @@ export const apiSlice = createApi({
     "getMeasurement",
     "AllContacts",
     "getContact",
+    "AllCarousels",
+    "getCarousel",
   ],
 });

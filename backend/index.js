@@ -22,6 +22,7 @@ const inquiryRoutes = require("./routes/inquiryRoutes");
 const faqRoutes = require("./routes/faqRoutes");
 const measurementRoutes = require("./routes/measurementRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const carouselRoutes = require("./routes/carouselRoutes");
 
 // app init
 const app = express();
@@ -50,6 +51,7 @@ app.use("/api/inquiries", inquiryRoutes);
 app.use("/api/faq", faqRoutes);
 app.use("/api/measurements", measurementRoutes);
 app.use("/api/contacts", contactRoutes);
+app.use("/api/carousel", carouselRoutes);
 
 // root route
 app.get("/", (req, res) => res.send("Apps worked successfully"));

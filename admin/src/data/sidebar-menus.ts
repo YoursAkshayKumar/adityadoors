@@ -88,6 +88,16 @@ const sidebar_menu: Array<ISidebarMenus> = [
     ]
   },
   {
+    id: 12,
+    icon: Pages,
+    link: "/carousels-list",
+    title: "Carousels",
+    subMenus: [
+      { title: "Carousels List", link: "/carousels-list" },
+      { title: "Add Carousel", link: "/add-carousel" }
+    ]
+  },
+  {
     id: 9,
     icon: Profile,
     link: "/profile",

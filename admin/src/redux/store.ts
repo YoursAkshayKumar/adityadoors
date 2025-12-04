@@ -1,6 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { apiSlice } from './api/apiSlice'
 import authSlice from './auth/authSlice'
+// Import carousel API to register endpoints
+import './carousel/carouselApi'
 
 export const store = configureStore({
   reducer: {
