@@ -46,7 +46,7 @@ const EditCarousel = ({ id }: { id: string }) => {
       setValue("description", carousel.description);
       setValue("order", carousel.order?.toString() || "0");
       setValue("link", carousel.link || "");
-      setValue("buttonText", carousel.buttonText || "READ MORE");
+      setValue("button text", carousel.buttonText || "READ MORE");
       setStatus(carousel.status);
       setImg(carousel.image);
       setBackgroundImg(carousel.backgroundImage || carousel.image);

@@ -40,7 +40,7 @@ const useCarouselSubmit = () => {
         status: status,
         order: Number(data?.order) || 0,
         link: data?.link || "",
-        buttonText: data?.buttonText || "READ MORE",
+        buttonText: data?.["button text"] || "READ MORE",
       };
       const res = await addCarousel(payload);
       if ("error" in res && res.error) {
@@ -76,7 +76,7 @@ const useCarouselSubmit = () => {
         status: status,
         order: Number(data?.order) || 0,
         link: data?.link || "",
-        buttonText: data?.buttonText || "READ MORE",
+        buttonText: data?.["button text"] || "READ MORE",
       };
       const res = await editCarousel({ id, data: payload });
       if ("error" in res && res.error) {
