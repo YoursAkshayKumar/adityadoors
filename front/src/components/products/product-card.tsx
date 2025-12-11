@@ -9,9 +9,10 @@ import { useRouter } from "next/navigation";
 
 interface Product {
   id: string;
+  slug?: string;
   name: string;
   category: string;
-  price: number;
+  price?: number;
   originalPrice?: number;
   rating: number;
   reviews: number;
@@ -38,10 +39,11 @@ export default function ProductCard({
   const router = useRouter();
 
   const handleViewDetails = () => {
-    if (!product.id) {
+    const href = product.slug || product.id;
+    if (!href) {
       return;
     }
-    router.push(`/products/${product.id}`);
+    router.push(`/products/${href}`);
   };
 
   return (
@@ -56,21 +58,16 @@ export default function ProductCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Product Image */}
-      <div className="relative h-64 overflow-hidden">
-        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-          {/* Placeholder for product image */}
+      <div className="relative overflow-hidden bg-white">
+        <div className="w-full h-[420px] md:h-[460px] bg-white flex items-center justify-center overflow-hidden">
           <Image
             src={product.image}
             alt={product.name}
-            width={400}
-            height={256}
-            className="w-full object-cover"
-            style={{ width: "auto", height: "auto" }}
+            width={500}
+            height={360}
+            className="w-full h-full object-contain"
+            style={{ width: "100%", height: "100%" }}
           />
-          {/* <div className="text-gray-400 text-center">
-            <div className="w-20 h-20 bg-gray-300 rounded-lg mx-auto mb-2"></div>
-            <p className="text-sm">{product.name}</p>
-          </div> */}
         </div>
 
         {/* Badges */}
@@ -175,24 +172,7 @@ export default function ProductCard({
           </span>
         </div>
 
-        {/* Price */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-gray-900">
-              ₹{product.price}
-            </span>
-            {product.originalPrice && (
-              <span className="text-lg text-gray-500 line-through">
-                ₹{product.originalPrice}
-              </span>
-            )}
-          </div>
-          {product.originalPrice && (
-            <span className="text-sm text-red-500 font-medium">
-              Save ₹{(product.originalPrice - product.price).toFixed(2)}
-            </span>
-          )}
-        </div>
+        {/* Pricing removed per requirement */}
       </div>
       {/* {showInquiryModal && (
               <InquiryModal

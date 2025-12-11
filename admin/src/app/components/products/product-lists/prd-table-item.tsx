@@ -21,13 +21,6 @@ const ProductTableItem = ({ product }: { product: IProduct }) => {
           </span>
         </a>
       </td>
-      <td className="px-3 py-3 font-normal text-[#55585B] text-end">#{product.sku}</td>
-      <td className="px-3 py-3 font-normal text-[#55585B] text-end">
-        {product.quantity}
-      </td>
-      <td className="px-3 py-3 font-normal text-[#55585B] text-end">
-        ₹{product.originalPrice}
-      </td>
       <td className="px-3 py-3 text-end">
         <span
           className={`text-[11px] px-3 py-1 rounded-md leading-none font-medium text-end 

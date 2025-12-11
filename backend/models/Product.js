@@ -3,9 +3,16 @@ const valid = require("validator");
 const { ObjectId } = mongoose.Schema.Types;
 
 const productSchema = mongoose.Schema({
+  slug: {
+    type: String,
+    unique: true,
+    sparse: true,
+    trim: true,
+  },
   sku: {
     type: String,
-    required: true,
+    required: false,
+    trim: true,
   },
   title:{
     type:String,
@@ -22,7 +29,11 @@ const productSchema = mongoose.Schema({
     required: false,
     trim:true,
   },
-  tags: [String],
+  tags: {
+    type: [String],
+    required: false,
+    default: [],
+  },
   image:{
     type:String,
     required: true,
@@ -30,19 +41,19 @@ const productSchema = mongoose.Schema({
   },
   originalPrice: {
     type: Number,
-    required: true,
+    required: false,
     min: [0, "Price can't be negative"],
   },
   price: {
     type: Number,
-    required: true,
-    default: 0,
+    required: false,
+    default: undefined,
     min: [0, "Price can't be negative"],
   },
   discount: {
     type: Number,
     required: false,
-    default: 0,
+    default: undefined,
   },
   relatedImages: [{
     type: String,
@@ -71,7 +82,7 @@ const productSchema = mongoose.Schema({
   },
   quantity: {
     type: Number,
-    required: true,
+    required: false,
   },
   colors: {
     type: [String],

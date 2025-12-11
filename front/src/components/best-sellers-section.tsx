@@ -2,8 +2,21 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useScrollAnimation } from "./hooks/use-scroll-animation";
 import { Image } from "antd";
+import { Sparkles, ShieldCheck } from "lucide-react";
+import { useScrollAnimation } from "./hooks/use-scroll-animation";
+
+const buildSlug = (title?: string, slug?: string, id?: string) => {
+  if (slug && slug.trim()) return slug;
+  if (title) {
+    const generated = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    if (generated) return generated;
+  }
+  return id || "";
+};
 
 // =======================================================
 // 1. ADDED: TypeScript Interface for Product Data
@@ -11,7 +24,7 @@ import { Image } from "antd";
 // =======================================================
 interface Product {
   // CRITICAL FIX: The unique MongoDB ID used for the React key
-  _id: string; 
+  _id: string;
   title: string;
   image: string;
   description: string;
@@ -24,14 +37,14 @@ interface Product {
 
 export default function BestSellersSection() {
   const [sectionRef, isVisible] = useScrollAnimation();
-  
+
   // =======================================================
   // 2. FIXED: Explicitly set the type to Product[] for the state
   // This resolves the Type error: Property '_id' does not exist on type 'never'.
   // =======================================================
   const [products, setProducts] = useState<Product[]>([]);
   // =======================================================
-  
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -61,19 +74,26 @@ export default function BestSellersSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4 md:px-6">
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden py-20 md:py-28 bg-gradient-to-b from-[#f7f1e9] via-white to-[#f0e6d8]"
+    >
+      <div className="pointer-events-none absolute -left-24 top-10 h-80 w-80 rounded-full bg-[#c4a267]/15 blur-3xl" />
+      <div className="pointer-events-none absolute -right-16 bottom-6 h-72 w-72 rounded-full bg-[#7c5b34]/10 blur-3xl" />
+
+      <div className="relative container mx-auto px-4 md:px-6">
         {/* Section Heading */}
         <div className="text-center mb-12">
-          <div className="text-gold text-sm font-medium mb-2">Best Sellers</div>
-          <h2 className="text-3xl md:text-4xl font-bold text-[#3c2a21] mb-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#c6a15b]/40 bg-white/70 px-4 py-2 text-sm font-medium text-[#7a5b3b] shadow-sm backdrop-blur">
+            <Sparkles className="h-4 w-4 text-[#c6a15b]" />
+            Signature Picks
+          </div>
+          <h2 className="mt-4 text-3xl md:text-4xl font-semibold text-[#2f241b]">
             Popular Products
           </h2>
-          <p className="text-gray-600 max-w-3xl mx-auto">
-            Enhance the beauty and security of your home with our most popular
-            and highly recommended premium doors and frames. Each product is
-            crafted with expert detailing, elegant design, and long-lasting
-            durability that customers truly value.
+          <p className="mt-3 text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Elevate every entrance with statement-making designs, premium
+            finishes, and secure builds trusted by homeowners.
           </p>
         </div>
 
@@ -87,63 +107,89 @@ export default function BestSellersSection() {
         {/* Product Grid */}
         {!loading && products.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.slice(0, 8).map((product, index) => (
-              <Link
-                href={`/products/${product._id}`}
-                key={product._id}
-                className={`block bg-white rounded-lg shadow-lg overflow-hidden group transition-all duration-700 hover:shadow-xl hover:transform hover:scale-105 cursor-pointer ${
-                  isVisible
-                    ? "opacity-100 transform translate-y-0"
-                    : "opacity-0 transform translate-y-12"
-                }`}
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                <div className="relative">
-                  {/* Sale Badge */}
-                  {product?.onSale && (
-                    <div className="absolute top-4 left-4 z-10 bg-red-500 text-white px-3 py-1 text-xs font-bold rounded">
-                      SALE
+            {products.slice(0, 8).map((product, index) => {
+              const hrefSlug = buildSlug(product.title, (product as any).slug, product._id);
+              return (
+                <Link
+                  href={`/products/${hrefSlug}`}
+                  key={product._id}
+                  className={`group relative block h-full cursor-pointer ${
+                    isVisible
+                      ? "opacity-100 transform translate-y-0"
+                      : "opacity-0 transform translate-y-12"
+                  }`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#c6a15b]/20 via-white to-white opacity-0 blur-lg transition duration-500 group-hover:opacity-100" />
+
+                  <div className="relative h-full bg-white/95 backdrop-blur shadow-[0_18px_50px_-18px_rgba(63,41,22,0.28)] ring-1 ring-[#e8dcc5] overflow-hidden transition duration-500 group-hover:-translate-y-1">
+                    <div className="relative">
+                      <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#f7f0e4] via-transparent to-transparent opacity-90" />
+
+                      {/* Sale Badge */}
+                      {product?.onSale && (
+                        <div className="absolute top-4 left-4 z-10 rounded-full bg-red-500/95 px-3 py-1 text-xs font-semibold text-white shadow">
+                          SALE
+                        </div>
+                      )}
+
+                      {/* Accent Tag */}
+                      <div className="absolute top-4 right-4 z-10" />
+
+                      {/* Image Container */}
+                      <div className="relative w-full overflow-hidden bg-[#f9f5ef]">
+                        <Image
+                          src={product.image}
+                          alt={product.title}
+                          width={500}
+                          height={500}
+                          className="w-full h-auto object-contain !m-0 transition-transform duration-500 group-hover:scale-[1.015]"
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                            objectFit: "contain",
+                            display: "block",
+                          }}
+                          preview={false}
+                        />
+
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0f0a05]/5 opacity-0 transition duration-500 group-hover:opacity-100" />
+                      </div>
                     </div>
-                  )}
 
-                  {/* Image Container */}
-                  <div className="relative h-64 w-full overflow-hidden bg-gray-100">
-                    <Image
-                      src={product.image}
-                      alt={product.title}
-                      width={400}
-                      height={256}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                      preview={false}
-                    />
+                    {/* Product Info */}
+                    <div className="p-6 space-y-3 flex flex-col">
+                      <h3 className="text-lg font-semibold text-[#2f241b] text-center leading-tight group-hover:text-[#b68738] transition-colors duration-300 line-clamp-2 min-h-[3.5rem]">
+                        {product.title}
+                      </h3>
+
+                      <p className="text-gray-700 text-center text-sm leading-relaxed line-clamp-2 min-h-[2.5rem]">
+                        {product.description.split(" ").length > 15
+                          ? product.description.split(" ").slice(0, 15).join(" ") + "..."
+                          : product.description}
+                      </p>
+
+                      <div className="flex justify-center pt-2">
+                        <span className="rounded-full bg-[#f3e7cf] px-4 py-2 text-xs font-semibold uppercase tracking-wide text-[#8a693d] ring-1 ring-[#e5d5bf] transition duration-300 group-hover:bg-[#e6d1b0]">
+                          View details
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-
-                {/* Product Info */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-[#3c2a21] text-center mb-2 group-hover:text-gold transition-colors duration-300">
-                    {product.title}
-                  </h3>
-
-                  <p className="text-gray-600 text-center text-sm mb-4 line-clamp-3">
-                    {product.description.split(" ").length > 15
-                      ? product.description.split(" ").slice(0, 15).join(" ") + "..."
-                      : product.description}
-                  </p>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         )}
 
         {/* Load More */}
-        <div className="flex justify-center mt-4">
-          <Link href="/products" className="text-white hover:text-gold">
+        <div className="flex justify-center mt-12">
+          <Link href="/products">
             <button
-              className="bg-gold hover:bg-gold-dark text-white px-6 py-2 rounded-none transition-all duration-300"
+              className="bg-[#c6a15b] hover:bg-[#b68738] text-white px-8 py-3 rounded-full transition-all duration-300 font-medium shadow-md hover:shadow-lg"
               style={{ cursor: "pointer" }}
             >
-              Load More
+              View All Products
             </button>
           </Link>
         </div>

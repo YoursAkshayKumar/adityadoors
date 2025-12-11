@@ -2,14 +2,15 @@
 
 export interface IProduct {
   _id: string;
-  sku: string;
+  slug?: string;
+  sku?: string;
   title: string;
   parent: string;
   children?: string;
-  tags: string[];
+  tags?: string[];
   image: string;
-  originalPrice: number;
-  price: number;
+  originalPrice?: number;
+  price?: number;
   discount?: number;
   relatedImages: string[];
   description: string;
@@ -23,7 +24,7 @@ export interface IProduct {
     id:string;
   };
   unit?: string;
-  quantity: number;
+  quantity?: number;
   colors: string[];
   type?: string;
   itemInfo?: string;
@@ -41,14 +42,15 @@ export interface ProductResponse {
 
 // IAddProduct
 export interface IAddProduct {
-  sku: string;
+  slug?: string;
+  sku?: string;
   title: string;
   parent: string;
   children?: string;
-  tags: string[];
+  tags?: string[];
   image: string;
-  originalPrice: number;
-  price: number;
+  originalPrice?: number;
+  price?: number;
   discount?: number;
   relatedImages: string[];
   description: string;

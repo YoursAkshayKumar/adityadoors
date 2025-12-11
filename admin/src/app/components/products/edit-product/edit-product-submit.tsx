@@ -9,7 +9,6 @@ import { useGetProductQuery } from "@/redux/product/productApi";
 import ProductTypeBrand from "../add-product/product-type-brand";
 import ProductVariants from "../add-product/product-variants";
 import ProductImgUpload from "../add-product/product-img-upload";
-import Tags from "../add-product/tags";
 import ProductCategory from "../../category/product-category";
 import Features from "../add-product/features";
 import Specifications, { SpecificationsRef } from "../add-product/specifications";
@@ -22,8 +21,6 @@ const EditProductSubmit = ({ id }: { id: string }) => {
     handleSubmit,
     register,
     errors,
-    tags,
-    setTags,
     control,
     setCategory,
     setParent,
@@ -53,10 +50,6 @@ const EditProductSubmit = ({ id }: { id: string }) => {
       // Initialize related images
       if (product.relatedImages && product.relatedImages.length > 0) {
         setRelatedImages(product.relatedImages);
-      }
-      // Initialize tags
-      if (product.tags && product.tags.length > 0) {
-        setTags(product.tags);
       }
       // Initialize colors
       if (product.colors && product.colors.length > 0) {
@@ -108,55 +101,20 @@ const EditProductSubmit = ({ id }: { id: string }) => {
                 errors={errors}
                 defaultValue={product.title}
               />
+              <FormField
+                title="slug"
+                isRequired={false}
+                placeHolder="Auto-generated from title (optional)"
+                bottomTitle="Leave blank to auto-generate from title."
+                defaultValue={product.slug}
+                register={register}
+                errors={errors}
+              />
               <DescriptionTextarea
                 register={register}
                 errors={errors}
                 defaultValue={product.description}
               />
-            </div>
-
-            <div className="bg-white px-8 py-8 rounded-md mb-6">
-              <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-6">
-                <FormField
-                  title="price"
-                  isRequired={true}
-                  placeHolder="Product price"
-                  bottomTitle="Set the base price of product."
-                  type="number"
-                  defaultValue={product.price}
-                  register={register}
-                  errors={errors}
-                />
-                <FormField
-                  title="sku"
-                  isRequired={true}
-                  placeHolder="SKU"
-                  bottomTitle="Enter the product SKU."
-                  defaultValue={product.sku}
-                  register={register}
-                  errors={errors}
-                />
-                <FormField
-                  title="quantity"
-                  isRequired={true}
-                  placeHolder="Quantity"
-                  bottomTitle="Enter the product quantity."
-                  type="number"
-                  defaultValue={product.quantity}
-                  register={register}
-                  errors={errors}
-                />
-                <FormField
-                  title="discount"
-                  type="number"
-                  isRequired={false}
-                  placeHolder="Discount"
-                  bottomTitle="Set the Discount Percentage."
-                  defaultValue={product.discount}
-                  register={register}
-                  errors={errors}
-                />
-              </div>
             </div>
 
             <div className="bg-white px-8 py-8 rounded-md mb-6">
@@ -241,11 +199,6 @@ const EditProductSubmit = ({ id }: { id: string }) => {
                         }
                       : undefined
                   }
-                />
-                <Tags
-                  tags={tags}
-                  setTags={setTags}
-                  default_value={product.tags}
                 />
               </div>
             </div>

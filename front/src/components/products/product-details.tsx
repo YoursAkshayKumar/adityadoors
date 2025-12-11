@@ -4,12 +4,9 @@ import { useState, useEffect } from "react";
 import { useScrollAnimation } from "../hooks/use-scroll-animation";
 import {
   Star,
-  Plus,
-  Minus,
-  Truck,
-  Shield,
-  RotateCcw,
   Award,
+  Truck,
+  RotateCcw,
   ChevronLeft,
   ChevronRight,
   MessageSquare,
@@ -21,13 +18,12 @@ import { Button, Image } from "antd";
 import { useGetProductQuery } from "@/redux/features/productApi";
 
 interface ProductDetailProps {
-  productId: string;
+  productId: string; // slug or id fallback
 }
 
 export default function ProductDetail({ productId }: ProductDetailProps) {
   const [sectionRef, isVisible] = useScrollAnimation();
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
   const [showInquiryModal, setShowInquiryModal] = useState(false);
 
   // Fetch product from API
@@ -48,7 +44,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
     isOnSale: data.discount > 0,
     isFeatured: data.status === 'active',
     description: data.description,
-    inStock: data.status === 'active' && data.quantity > 0,
+    inStock: data.status === 'active',
     stockCount: data.quantity,
     specifications: data.specifications,
     features: data.features,
@@ -59,6 +55,13 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
       returnPolicy: "30-day return policy",
     },
   } : null;
+
+  const shortDescription =
+    product?.description?.length
+      ? `${product.description.slice(0, 420)}${
+          product.description.length > 420 ? "..." : ""
+        }`
+      : "Discover premium craftsmanship, durable materials, and elegant design. We customize finishes, sizes, hardware, and installation to fit your project. Contact us for detailed specs, on-site measurements, and scheduling.";
 
   // Check if specifications and features exist
   // Handle specifications - can be array of objects or object
@@ -86,10 +89,6 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
       }
     }
   }, [product, availableTabs, activeTab]);
-
-  const handleQuantityChange = (change: number) => {
-    setQuantity(Math.max(1, Math.min(10, quantity + change)));
-  };
 
   const nextImage = () => {
     if (product) {
@@ -175,12 +174,13 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
             {/* Left Side - Images */}
             <div className="space-y-4">
               {/* Main Image */}
-              <div className="relative aspect-square bg-white rounded-lg overflow-hidden shadow-lg">
-                <div className="w-full h-full flex items-center justify-center">
+              <div className="relative overflow-hidden">
+                <div className="w-full h-[500px] md:h-[560px] flex items-center justify-center">
                   <Image
                     src={product.images[selectedImage]}
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover !m-0"
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
                     preview={true}
                   />
                 </div>
@@ -251,7 +251,7 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                       <Image
                         src={img}
                         alt={`${product.name} ${index + 1}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                         preview={false}
                       />
                     </button>
@@ -293,118 +293,54 @@ export default function ProductDetail({ productId }: ProductDetailProps) {
                   </span>
                 </div>
 
-                {/* Price */}
-                <div className="flex items-center space-x-4 mb-6">
-                  <span className="text-4xl font-bold text-gray-900">
-                    ₹{product.price.toLocaleString()}
-                  </span>
-                  {product.originalPrice && (
-                    <>
-                      <span className="text-2xl text-gray-500 line-through">
-                        ₹{product.originalPrice.toLocaleString()}
-                      </span>
-                      <span className="bg-red-500 text-white px-3 py-1 text-sm font-bold rounded">
-                        Save ₹
-                        {(product.originalPrice - product.price).toLocaleString()}
-                      </span>
-                    </>
-                  )}
-                </div>
+                {/* Price/stock removed per requirements */}
               </div>
 
-              {/* Stock Status */}
-              <div className="flex items-center space-x-2">
-                <div
-                  className={`w-3 h-3 rounded-full ${
-                    product.inStock ? "bg-green-500" : "bg-red-500"
-                  }`}
-                ></div>
-                <span
-                  className={`font-medium ${
-                    product.inStock ? "text-green-600" : "text-red-600"
-                  }`}
+              {/* Actions */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Button
+                  onClick={() => setShowInquiryModal(true)}
+                  className="bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg transition-all duration-300 font-medium"
                 >
-                  {product.inStock
-                    ? `In Stock (${product.stockCount} available)`
-                    : "Out of Stock"}
-                </span>
+                  Buy Now
+                </Button>
+                <Button
+                  onClick={() => setShowInquiryModal(true)}
+                  className="border-2 border-gold text-gold hover:bg-gold hover:text-white py-3 rounded-lg transition-all duration-300 font-medium"
+                >
+                  <MessageSquare className="h-5 w-5 mr-2" />
+                  Inquiry
+                </Button>
               </div>
 
-              {/* Quantity and Actions */}
-              <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <span className="font-medium text-gray-900">Quantity:</span>
-                  <div className="flex items-center border border-gray-300 rounded-lg bg-white">
-                    <button
-                      onClick={() => handleQuantityChange(-1)}
-                      className="p-2 hover:bg-gray-100 transition-colors duration-300 text-gray-700 disabled:text-gray-400"
-                      disabled={quantity <= 1}
-                    >
-                      <Minus className="h-4 w-4" />
-                    </button>
-                    <span className="px-4 py-2 font-medium text-gray-900">{quantity}</span>
-                    <button
-                      onClick={() => handleQuantityChange(1)}
-                      className="p-2 hover:bg-gray-100 transition-colors duration-300 text-gray-700 disabled:text-gray-400"
-                      disabled={quantity >= 10}
-                    >
-                      <Plus className="h-4 w-4" />
-                    </button>
-                  </div>
+              {/* Summary & shipping */}
+              <div className="bg-white rounded-lg p-5 shadow-sm space-y-4 border border-gray-100">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Overview</h3>
+                  <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+                    {shortDescription}
+                  </p>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Button
-                    onClick={() => setShowInquiryModal(true)}
-                    className="bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg transition-all duration-300 font-medium"
-                  >
-                    Buy Now
-                  </Button>
-                  <Button
-                    onClick={() => setShowInquiryModal(true)}
-                    className="border-2 border-gold text-gold hover:bg-gold hover:text-white py-3 rounded-lg transition-all duration-300 font-medium"
-                  >
-                    <MessageSquare className="h-5 w-5 mr-2" />
-                    Inquiry
-                  </Button>
-                </div>
-              </div>
-
-              {/* Shipping Info */}
-              <div className="bg-white rounded-lg p-6 shadow-sm space-y-4">
-                <div className="flex items-center space-x-3">
-                  <Truck className="h-5 w-5 text-gold" />
-                  <div>
-                    <p className="font-medium">
-                      {product.shippingInfo.freeShipping
-                        ? "Free Shipping"
-                        : "Standard Shipping"}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      Estimated delivery: {product.shippingInfo.estimatedDelivery}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <RotateCcw className="h-5 w-5 text-gold" />
-                  <div>
-                    <p className="font-medium">Easy Returns</p>
-                    <p className="text-sm text-gray-600">
-                      {product.shippingInfo.returnPolicy}
-                    </p>
-                  </div>
-                </div>
-                {product.specifications?.Warranty && (
-                  <div className="flex items-center space-x-3">
-                    <Shield className="h-5 w-5 text-gold" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex items-start space-x-3">
+                    <div className="text-gold mt-0.5">
+                      <Truck className="h-5 w-5" />
+                    </div>
                     <div>
-                      <p className="font-medium">Warranty Included</p>
-                      <p className="text-sm text-gray-600">
-                        {product.specifications.Warranty} manufacturer warranty
-                      </p>
+                      <p className="text-gray-900 font-semibold">Free Shipping</p>
+                      <p className="text-gray-700 text-sm">Estimated delivery: 3-5 business days</p>
                     </div>
                   </div>
-                )}
+                  <div className="flex items-start space-x-3">
+                    <div className="text-gold mt-0.5">
+                      <RotateCcw className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-gray-900 font-semibold">Easy Returns</p>
+                      <p className="text-gray-700 text-sm">30-day return policy</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

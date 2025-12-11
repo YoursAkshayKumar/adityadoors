@@ -8,7 +8,6 @@ import AdditionalInformation from "./additional-information";
 import ProductVariants from "./product-variants";
 import ProductImgUpload from "./product-img-upload";
 import ProductCategory from "../../category/product-category";
-import Tags from "./tags";
 import FormField from "../form-field";
 import Colors from "./colors";
 import Features from "./features";
@@ -22,8 +21,6 @@ const ProductSubmit = () => {
     handleSubmitProduct,
     register,
     errors,
-    tags,
-    setTags,
     control,
     setCategory,
     setParent,
@@ -62,47 +59,15 @@ const ProductSubmit = () => {
               register={register}
               errors={errors}
             />
+            <FormField
+              title="slug"
+              isRequired={false}
+              placeHolder="Auto-generated from title (optional)"
+              bottomTitle="Leave blank to auto-generate from title."
+              register={register}
+              errors={errors}
+            />
             <DescriptionTextarea register={register} errors={errors} />
-          </div>
-
-          <div className="bg-white px-8 py-8 rounded-md mb-6">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-6">
-              <FormField
-                title="price"
-                isRequired={true}
-                placeHolder="Product price"
-                bottomTitle="Set the base price of product."
-                type="number"
-                register={register}
-                errors={errors}
-              />
-              <FormField
-                title="sku"
-                isRequired={true}
-                placeHolder="SKU"
-                bottomTitle="Enter the product SKU."
-                register={register}
-                errors={errors}
-              />
-              <FormField
-                title="quantity"
-                isRequired={true}
-                placeHolder="Quantity"
-                bottomTitle="Enter the product quantity."
-                type="number"
-                register={register}
-                errors={errors}
-              />
-              <FormField
-                title="discount"
-                type="number"
-                isRequired={false}
-                placeHolder="Discount"
-                bottomTitle="Set the Discount Percentage."
-                register={register}
-                errors={errors}
-              />
-            </div>
           </div>
 
            <div className="bg-white px-8 py-8 rounded-md mb-6">
@@ -173,13 +138,6 @@ const ProductSubmit = () => {
             </div>
           </div>
 
-          <div className="bg-white px-8 py-8 rounded-md mb-6">
-            <p className="mb-5 text-base text-black">Product Tags</p>
-            {/* tags start */}
-            <div className="grid grid-cols-1 sm:grid-cols-1 gap-3 mb-5">
-              <Tags tags={tags} setTags={setTags} />
-            </div>
-          </div>
         </div>
       </div>
       <button className="tp-btn px-5 py-2 mt-5" type="submit">

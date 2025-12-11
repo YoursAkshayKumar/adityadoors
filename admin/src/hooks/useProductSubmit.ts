@@ -24,7 +24,6 @@ const useProductSubmit = () => {
   const [category, setCategory] = useState<IBCType>({ name: '', id: '' });
   const [parent, setParent] = useState<string>('');
   const [children, setChildren] = useState<string>('');
-  const [tags, setTags] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
   const [features, setFeatures] = useState<string[]>([]);
   const [specifications, setSpecifications] = useState<ISpecification[]>([]);
@@ -55,27 +54,27 @@ const useProductSubmit = () => {
   // handle submit product
   const handleSubmitProduct = async (data: any) => {
     // Clean specifications: only include items with both label and value
-    const cleanSpecifications = specifications.filter(
-      (spec) => spec.label.trim() !== "" && spec.value.trim() !== ""
+    const cleanSpecifications = (specifications || []).filter(
+      (spec) =>
+        spec &&
+        typeof spec.label === "string" &&
+        typeof spec.value === "string" &&
+        spec.label.trim() !== "" &&
+        spec.value.trim() !== ""
     );
     
     // product data
     const productData: IAddProduct = {
-      sku: data.sku,
+      slug: data.slug,
       title: data.title,
       parent: parent,
       children: children || undefined,
-      tags: tags,
       image: img,
-      originalPrice: Number(data.price),
-      price: Number(data.price),
-      discount: Number(data.discount),
       relatedImages: relatedImages,
       description: data.description,
       brand: brand.name && brand.id ? brand : undefined,
       category: category,
       unit: data.unit || undefined,
-      quantity: Number(data.quantity),
       colors: colors,
       isOnSale: data.isOnSale,
       isPopular: data.isPopular || false,
@@ -89,28 +88,24 @@ const useProductSubmit = () => {
     if (!category.name) {
       return notifyError("Category is required");
     }
-    if (Number(data.discount) > Number(data.price)) {
-      return notifyError("Product price must be gether than discount");
-    } else {
-      const res = await addProduct(productData);
+    const res = await addProduct(productData);
 
-      if ("error" in res && res.error) {
-        if ("data" in res.error) {
-          const errorData = res.error.data as { message?: string, errorMessages?: { path: string, message: string }[] };
-          if (errorData.errorMessages && Array.isArray(errorData.errorMessages)) {
-            const errorMessage = errorData.errorMessages.map(err => err.message).join(", ");
-            return notifyError(errorMessage);
-          }
-          if (typeof errorData.message === "string") {
-            return notifyError(errorData.message);
-          }
+    if ("error" in res && res.error) {
+      if ("data" in res.error) {
+        const errorData = res.error.data as { message?: string, errorMessages?: { path: string, message: string }[] };
+        if (errorData.errorMessages && Array.isArray(errorData.errorMessages)) {
+          const errorMessage = errorData.errorMessages.map(err => err.message).join(", ");
+          return notifyError(errorMessage);
+        }
+        if (typeof errorData.message === "string") {
+          return notifyError(errorData.message);
         }
       }
-      else {
-        notifySuccess("Product created successFully");
-        setIsSubmitted(true);
-        router.push('/product-grid')
-      }
+    }
+    else {
+      notifySuccess("Product created successFully");
+      setIsSubmitted(true);
+      router.push('/product-grid')
     }
   };
   // handle edit product
@@ -125,35 +120,32 @@ const useProductSubmit = () => {
     if (!parent || !parent.trim()) {
       return notifyError("Parent category is required");
     }
-    if (Number(data.discount) > Number(data.price)) {
-      return notifyError("Product price must be greater than discount");
-    }
     if (!id || !id.trim()) {
       return notifyError("Product ID is invalid");
     }
 
     // Clean specifications: only include items with both label and value
-    const cleanSpecifications = specifications.filter(
-      (spec) => spec.label.trim() !== "" && spec.value.trim() !== ""
+    const cleanSpecifications = (specifications || []).filter(
+      (spec) =>
+        spec &&
+        typeof spec.label === "string" &&
+        typeof spec.value === "string" &&
+        spec.label.trim() !== "" &&
+        spec.value.trim() !== ""
     );
 
     // product data
     const productData: IAddProduct = {
-      sku: data.sku,
+      slug: data.slug,
       title: data.title,
       parent: parent,
       children: children && children.trim() ? children : undefined,
-      tags: tags.length > 0 ? tags : [],
       image: img,
-      originalPrice: Number(data.price),
-      price: Number(data.price),
-      discount: Number(data.discount) || 0,
       relatedImages: relatedImages.length > 0 ? relatedImages : [],
       description: data.description,
       brand: brand.name ? brand : undefined,
       category: category,
       unit: data.unit || undefined,
-      quantity: Number(data.quantity),
       colors: colors.length > 0 ? colors : [],
       isOnSale: data.isOnSale || false,
       isPopular: data.isPopular || false,
@@ -198,10 +190,8 @@ const useProductSubmit = () => {
     control,
     setParent,
     setChildren,
-    setTags,
     setColors,
     setRelatedImages,
-    tags,
     isSubmitted,
     relatedImages,
     colors,

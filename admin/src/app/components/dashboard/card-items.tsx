@@ -1,20 +1,19 @@
 "use client";
 import React from "react";
 import { MonthSales, Received, Sales, TotalOrders } from "@/svg";
-import { useGetDashboardAmountQuery } from "@/redux/order/orderApi";
+import { useGetAllInquiriesQuery } from "@/redux/inquiry/inquiryApi";
 import dayjs from "dayjs";
 import isToday from "dayjs/plugin/isToday";
 import isYesterday from "dayjs/plugin/isYesterday";
 import isBetween from "dayjs/plugin/isBetween";
 import ErrorMsg from "../common/error-msg";
-dayjs.extend(isToday, isYesterday);
+dayjs.extend(isToday);
+dayjs.extend(isYesterday);
 dayjs.extend(isBetween);
 
 type IPropType = {
   title: string;
   amount: number | string;
-  cash?: number;
-  card?: number;
   icon: React.ReactNode;
   clr: string;
   clr2: string;
@@ -42,10 +41,21 @@ function CardItem({ title, amount,icon, clr2 }: IPropType) {
 
 const CardItems = () => {
   const {
-    data: dashboardOrderAmount,
+    data: inquiries,
     isError,
     isLoading,
-  } = useGetDashboardAmountQuery();
+  } = useGetAllInquiriesQuery();
+
+  const list = inquiries?.result || [];
+
+  const todayLeads = list.filter((lead) => dayjs(lead.createdAt).isToday()).length;
+  const yesterdayLeads = list.filter((lead) =>
+    dayjs(lead.createdAt).isYesterday()
+  ).length;
+  const thisMonthLeads = list.filter((lead) =>
+    dayjs(lead.createdAt).isBetween(dayjs().startOf("month"), dayjs().endOf("month"), null, "[]")
+  ).length;
+  const totalLeads = list.length;
 
   // decide what to render
   let content = null;
@@ -61,29 +71,29 @@ const CardItems = () => {
     content = (
       <>
         <CardItem
-          title="Today Orders"
-          amount={dashboardOrderAmount?.todayOrderAmount as number} 
+          title="Today Leads"
+          amount={todayLeads}
           icon={<Received />}
           clr=""
           clr2="bg-success"
         />
         <CardItem
-          title="Yesterday Orders"
-          amount={dashboardOrderAmount?.yesterdayOrderAmount as number}
+          title="Yesterday Leads"
+          amount={yesterdayLeads}
           icon={<Sales />}
           clr="text-purple bg-purple/10"
           clr2="bg-purple"
         />
         <CardItem
-          title="Monthly Orders"
-          amount={dashboardOrderAmount?.monthlyOrderAmount as number}
+          title="Monthly Leads"
+          amount={thisMonthLeads}
           icon={<MonthSales />}
           clr="text-info bg-info/10"
           clr2="bg-info"
         />
         <CardItem
-          title="Total Orders"
-          amount={(dashboardOrderAmount?.totalOrderAmount as number).toFixed(2)}
+          title="Total Leads"
+          amount={totalLeads}
           icon={<TotalOrders />}
           clr="text-warning bg-warning/10"
           clr2="bg-warning"

@@ -5,7 +5,7 @@ import ProductDetail from "../../../components/products/product-details";
 
 interface PageProps {
   params: Promise<{
-    id: string;
+    id: string; // slug value
   }>;
 }
 

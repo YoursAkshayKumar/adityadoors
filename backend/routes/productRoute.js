@@ -10,6 +10,7 @@ const {
   getAllProducts,
   deleteProduct,
   updateProduct,
+  getProductBySlug,
 } = require("../controller/productController");
 
 // router
@@ -28,6 +29,8 @@ router.get("/popular-products", getPopularProducts);
 // get discount products
 router.get("/discount", getDiscountProduct);
 router.get("/relatedProduct", getRelatedProducts);
+// slug route must come before id route
+router.get("/slug/:slug", getProductBySlug);
 router.get("/:id", getSingleProduct);
 // delete product
 router.delete('/:id', deleteProduct);

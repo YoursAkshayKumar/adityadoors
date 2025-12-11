@@ -38,28 +38,8 @@ module.exports.addAllBlogs = async (req, res) => {
 
 module.exports.getAllBlogs = async (req, res, next) => {
   try {
+    // Read-only fetch to avoid extra DB writes that can spike CPU
     const blogs = await Blog.find().sort({ updatedAt: -1 });
-    
-    // Generate slugs for blogs that don't have them (only update, don't wait for all)
-    blogs.forEach(async (blog) => {
-      if (!blog.slug && blog.title) {
-        let generatedSlug = slugify(blog.title, { lower: true, strict: true });
-        let uniqueSlug = generatedSlug;
-        let counter = 1;
-        
-        // Ensure slug is unique
-        let existingBlog = await Blog.findOne({ slug: uniqueSlug, _id: { $ne: blog._id } });
-        while (existingBlog) {
-          uniqueSlug = `${generatedSlug}-${counter}`;
-          counter++;
-          existingBlog = await Blog.findOne({ slug: uniqueSlug, _id: { $ne: blog._id } });
-        }
-        
-        blog.slug = uniqueSlug;
-        await blog.save();
-      }
-    });
-    
     res.status(200).json({ success: true, result: blogs });
   } catch (error) {
     next(error);

@@ -38,6 +38,7 @@ interface Product {
 // Transformed product interface for ProductCard
 interface TransformedProduct {
   id: string;
+  slug?: string;
   name: string;
   category: string;
   price: number;
@@ -64,12 +65,25 @@ export default function ProductsContent() {
   const products: Product[] = data?.products || data || [];
 
   // Transform MongoDB product to ProductCard format
+  const buildSlug = (title?: string, slug?: string, id?: string) => {
+    if (slug && slug.trim()) return slug;
+    if (title) {
+      const generated = title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+      if (generated) return generated;
+    }
+    return id || "";
+  };
+
   const transformProduct = (product: Product): TransformedProduct => {
     return {
       id: product._id,
+      slug: buildSlug(product.title, (product as any).slug, product._id),
       name: product.title,
       category: product.parent,
-      price: product.price,
+      price: Number(product.price || 0),
       originalPrice: product.discount > 0 ? product.originalPrice : undefined,
       rating: product.rating || 4.5, // Default rating if not available
       reviews: product.reviews || 0,
